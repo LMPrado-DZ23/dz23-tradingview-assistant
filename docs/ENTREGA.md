@@ -198,8 +198,11 @@ npm run host:uninstall
 #   del "$env:USERPROFILE\.dz23\gateway-token"   (o próximo gateway:dev gera outro)
 ```
 
-Backups: `C:\Users\lmpra\Documents\dz23-backups\tv-assistant-*` (nenhum foi excluído). Não há commit no Git: o
-repositório continua sem histórico, por decisão de não publicar sem autorização.
+Backups: `C:\Users\lmpra\Documents\dz23-backups\tv-assistant-*` (nenhum foi excluído).
+
+Versionamento: desde 2026-10-31 o projeto tem histórico Git — commits `ab10b8e` (entrega v2.17.0) e `c651194` (guarda de
+segredos) — e remoto **privado** em https://github.com/LMPrado-DZ23/dz23-tradingview-assistant, com autorização explícita
+do dono. Procedimento de volta atrás em [ROLLBACK.md](docs/ROLLBACK.md).
 
 ## 8. Automação e repetibilidade
 

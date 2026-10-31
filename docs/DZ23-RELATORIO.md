@@ -55,7 +55,7 @@ node _aitna/tools/release/cli.mjs check --offline
 
 1. **Teste live dos provedores de IA** — sem credenciais nesta máquina. Integração implementada e testada contra
    provedor simulado por HTTP real; o teste live é `POST /test` com a chave do dono.
-2. **Branch git / commit / push** — a pasta não é um repositório; nada foi versionado (decisão do dono).
+2. **Branch git / commit / push** — resolvido em 2026-10-31: o repositório local ganhou histórico (commits b10b8e e c651194) e remoto **privado** no GitHub, com autorização do dono. Ver docs/ROLLBACK.md.
 3. **`npm run release:pack`** — o CLI `zip` não existe no Windows desta máquina. O pacote foi gerado com
    `Compress-Archive` e verificado por extração; a ferramenta oficial do projeto continua sem rodar aqui.
 4. **Integração Hermes / TradingView real** — não testada; o contrato JSON está pronto para o consumo, mas

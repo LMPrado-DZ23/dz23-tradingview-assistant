@@ -5,6 +5,7 @@
 // reality. Running every suite here would triple the gate, so this checks what is cheap and verifiable — packaging count,
 // version, gate count — and, most importantly, whether the acceptance evidence is **older than the code it describes**.
 import { createHash } from 'node:crypto'
+import { execFileSync } from 'node:child_process'
 import { readdirSync, readFileSync, statSync } from 'node:fs'
 import { dirname, join, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -115,6 +116,44 @@ if (acceptance) {
     notes.push('aceite gerado depois da última mudança em extension/ (confere)')
   }
   }
+}
+
+// 5. o que os documentos dizem sobre o repositório é verdade?
+const commitCount = (() => {
+  try {
+    return Number(execFileSync('git', ['rev-list', '--count', 'HEAD'], { cwd: ROOT, encoding: 'utf8' }).trim())
+  } catch {
+    return 0
+  }
+})()
+const remoteUrl = (() => {
+  try {
+    return execFileSync('git', ['remote', 'get-url', 'origin'], { cwd: ROOT, encoding: 'utf8' }).trim()
+  } catch {
+    return ''
+  }
+})()
+const docFiles = readdirSync(join(ROOT, 'docs')).filter((name) => name.endsWith('.md'))
+const claims = docFiles.flatMap((name) => {
+  const text = readFileSync(join(ROOT, 'docs', name), 'utf8')
+  return text.split('\n')
+    .map((line, index) => ({ name, line, number: index + 1 }))
+    .filter((entry) => /não há commit|sem histórico|não é um repositório|nada foi versionado/i.test(entry.line))
+})
+if (commitCount > 0 && claims.length) {
+  problems.push({
+    kind: 'repo_claim_stale',
+    detail: `o repositório tem ${commitCount} commit(s) mas docs/${claims[0].name}:${claims[0].number} ainda diz que não há histórico`,
+  })
+} else if (commitCount > 0) {
+  notes.push(`histórico git: ${commitCount} commit(s) (confere com a documentação)`)
+}
+if (remoteUrl && !claims.length) {
+  const mentionsRemote = docFiles.some((name) => readFileSync(join(ROOT, 'docs', name), 'utf8').includes(remoteUrl.replace(/\.git$/, '')))
+  if (!mentionsRemote)
+    problems.push({ kind: 'remote_undocumented', detail: 'existe remoto configurado mas nenhum documento o cita' })
+  else
+    notes.push('remoto configurado e documentado (confere)')
 }
 
 for (const note of notes)
