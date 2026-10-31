@@ -12,6 +12,12 @@ the whole file. Format and rendering rules: [_aitna/skills/changelog](../_aitna/
 - `npm run gateway:dev`: one command that reuses the token in `~/.dz23/gateway-token`, loads
   `~/.dz23/providers.env` when present and starts the gateway on 127.0.0.1:8777.
 - Candle provenance in the system prompt (`Fonte dos candles: BINANCE`), with the OHLCV summary the model reads.
+- Secrets cannot be committed (`npm run audit:secrets`, in the gate): the first commit was checked by hand, and a manual
+  check does not repeat itself. The audit fails when a forbidden path is tracked (gateway config, `.env`, key material,
+  `node_modules`, `.zip`, the browser profile) or when tracked content matches a credential pattern — proven twice by
+  injecting a fake `sk-…` key and a tracked `gateway/config.json`, both rejected, both removed, back to zero. Test fixtures
+  are allowed only when the line says `probe`/`example`/`dummy`, so the allowlist stays short by design.
+
 - DSR saturation is declared where it is read: round 74 proved the deflated Sharpe rounds to 1.000 for strong strategies,
   so "DSR 1.0" was inviting a confidence the statistic cannot support. `overfittingReport` now adds a **limitation** (not a
   warning — a healthy case must not look alarming) saying a saturated DSR cannot tell an excellent strategy from a merely

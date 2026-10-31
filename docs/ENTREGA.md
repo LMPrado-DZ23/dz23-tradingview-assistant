@@ -70,7 +70,7 @@ declarado; **ausente** = não existe.
 | Watchlists e alertas | **parcial** | motor 14 testes e UI 13 passos (criar, **editar**, pausar, retomar, excluir, avaliar); limite: avaliação só ao clicar, não é alerta do TradingView |
 | MCP oficial do TradingView | **bloqueado (dependência externa)** | OAuth 2.1 + PKCE + registro dinâmico implementados, 16 testes de contrato; o servidor recusa com **"É necessário um plano pago"** — `BLOCKED_BY_EXTERNAL_DEPENDENCY` documentado em `docs/MCP-TRADINGVIEW.md` |
 | Opções do popup numa fonte única | **comprovado** | o popup gravava `iondvOptions` direto e deixava o registro velho (a ponte podia espelhar o valor velho por cima da escolha nova); agora passa por um caminho único com fallback declarado — 2 testes estruturais |
-| Gate com prova de evidência | **comprovado** | `npm run audit:gate`: **28 verificações, 604 testes**; cada comando precisa mostrar que rodou (mínimo por suíte, marcador por script) — um glob vazio reprova em vez de passar |
+| Gate com prova de evidência | **comprovado** | `npm run audit:gate`: **29 verificações, 604 testes**; cada comando precisa mostrar que rodou (mínimo por suíte, marcador por script) — um glob vazio reprova em vez de passar |
 | Higiene do pacote | **comprovado** | `npm run audit:orphans`: 66 arquivos, 60 referências, **0 órfãos e 0 referências quebradas**; testes que viajavam dentro de `extension/quant/` saíram do pacote |
 | Aceite com autoridade única | **comprovado** | `npm run accept` delega ao gate (nada de lista paralela de comandos) e mapeia 22 vereditos em 16 critérios do §17 — 16 PASS, 2 EXTERNAL, 2 ABSENT |
 | Ingestão de experimentos (pesquisa → agentes) | **comprovado** | serviço recebia `POST /experiments` e **nada enviava**; agora `npm run dz23:send` valida localmente, envia, lê de volta e compara hash do aceite com o gravado — 5 testes contra servidor real; ver [DZ23-INGEST.md](docs/DZ23-INGEST.md) |
@@ -100,6 +100,7 @@ declarado; **ausente** = não existe.
 | Indicadores conferidos à mão | **comprovado** | SMA, EMA (α 2/(n+1) a partir da semente SMA), RSI (100 em altas, 0 em quedas, ~50 em zigue-zague), ATR (range constante = ele; gap eleva), Bollinger (σ populacional, conferido a 1e-6) e VWAP (preço constante; peso por volume) batem com a conta feita **fora** do código, e todos devolvem `null` em série curta em vez de número inventado |
 | Bloco do prompt declara procedência | **comprovado** | 8 asserções sobre o texto que o modelo lê: fonte, timeframe, quantidade e horário do último candle aparecem; os números do texto batem com os calculados; indicador indisponível é **omitido** (nenhum `null`/`NaN` vaza para o prompt); a limitação nomeia o indicador e o mínimo que faltou; série curta diz "indisponíveis" com o mínimo; e o bloco instrui a rotular interpretação |
 | Saturação do DSR declarada | **comprovado** | quando o DSR arredonda para ≥ 0,999, o relatório emite **limitação** dizendo que o número não distingue estratégia excelente de apenas forte e aponta PBO + out-of-sample; DSR limítrofe (≥ 0,95) avisa que mais tentativas o derrubam. A limitação chega à tela (`extension/copilot/app.js` renderiza `overfitting.limitations`) |
+| Nenhum segredo versionado | **comprovado** | `npm run audit:secrets` (no gate): reprova se um caminho proibido for rastreado (config do gateway, `.env`, chaves, `node_modules`, `.zip`, perfil de navegador) ou se o conteúdo de arquivo rastreado casar com `sk-…`, `AIza…`, `ghp_…`, `xox…` ou chave privada. Provado injetando um segredo e um caminho proibido: os dois reprovaram; removidos, volta a 0 |
 | Desenho no gráfico (linhas/zonas/Fibonacci) | **ausente** | exigiria a API interna do chart; não é pública |
 | Notícias/fundamentos/screener | **ausente** | não há fonte licenciada integrada; não foi simulado |
 | Execução de ordens | **ausente por design** | o produto analisa e sugere; nada envia ordem |
@@ -156,7 +157,7 @@ Natureza dos testes, sem confundir as coisas:
 | Alertas só avaliam ao clicar | alerta "esquecido" | declarado na UI; próximo passo é agendador com `alarms` |
 | Token do gateway em `chrome.storage.local` | perfil local | não é `localStorage`, não sai da máquina; chaves de provedor nunca entram na extensão |
 | Bonjour 3.0.0.10 bloqueado pela LSA | ruído no Windows, sem relação com o produto | manter bloqueio; atualizar/remover Bonjour é opção do usuário |
-| Single maintainer | continuidade | documentação por módulo + 28 verificações reproduzíveis por qualquer pessoa |
+| Single maintainer | continuidade | documentação por módulo + 29 verificações reproduzíveis por qualquer pessoa |
 | 4 avisos **moderados** de dependência (eslint → minimatch) | só desenvolvimento: `extension/` não tem dependência em runtime; `npm audit --audit-level=high` sai 0 | **não é corrigível hoje**: a faixa afetada é `minimatch <11.0.1`, o eslint 10.x fixa `^10.2.x` e o eslint 11 **não existe** no registro (última: 10.14.0). O "fix" sugerido é *downgrade* para eslint 4.0.0, recusado. Resolver quando sair eslint com minimatch ≥ 11 |
 
 ---

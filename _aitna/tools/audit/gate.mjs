@@ -39,6 +39,7 @@ const GATES = [
   { name: 'e2e', argv: ['node', `${TOOLS}/e2e/copilot-e2e.mjs`], markers: ['"passed": true'] },
   { name: 'audit', shell: 'npm audit --audit-level=high', markers: ['vulnerabilities'] },
   { name: 'numbers', argv: ['node', `${TOOLS}/audit/numbers.mjs`], markers: ['"passed":true'] },
+  { name: 'secrets', argv: ['node', `${TOOLS}/audit/secrets.mjs`], markers: ['"passed":true'] },
   { name: 'package', argv: ['node', `${TOOLS}/audit/package.mjs`], markers: ['"passed":true'] },
   { name: 'release', argv: ['node', `${TOOLS}/release/cli.mjs`, 'check', '--offline', '--dev'], markers: ['"ok":true', '"ok": true'] },
 ]
