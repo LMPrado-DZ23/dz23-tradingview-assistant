@@ -62,7 +62,8 @@
     "verify": "node _aitna/tools/audit/gate.mjs && npm run release:pack && node _aitna/tools/audit/package.mjs && node _aitna/tools/audit/numbers.mjs",
     "smoke:live": "node _aitna/tools/e2e/live-smoke.mjs",
     "probe:api": "node _aitna/tools/e2e/api-probe.mjs",
-    "audit:secrets": "node _aitna/tools/audit/secrets.mjs"
+    "audit:secrets": "node _aitna/tools/audit/secrets.mjs",
+    "docs:screenshots": "node _aitna/tools/e2e/shots.mjs"
   },
   "devDependencies": {
     "akmon": "git+https://github.com/akumidv/ai_akmon.git#3a7c54016e2d1b7771ea02ed578a03dff7db7217",
