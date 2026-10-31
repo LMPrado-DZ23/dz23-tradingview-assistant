@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DZ23 Copilot</title>
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <div class="app" id="app">
+    <aside class="rail" id="rail">
+      <div class="rail-head">
+        <span class="brand">DZ23<span class="brand-dot">·</span>Copilot</span>
+        <div class="rail-actions">
+          <button id="newChat" class="icon-btn" title="Nova conversa" aria-label="Nova conversa">+</button>
+          <button id="railClose" class="icon-btn rail-close" title="Fechar histórico" aria-label="Fechar histórico">×</button>
+        </div>
+      </div>
+      <nav class="history" id="history" aria-label="Histórico de conversas"></nav>
+      <div class="rail-foot">
+        <span class="status" id="status"><i class="dot" id="statusDot"></i><span id="statusText">verificando…</span></span>
+        <button id="openSettings" class="icon-btn" title="Configurações" aria-label="Configurações">⚙</button>
+      </div>
+    </aside>
+    <div class="rail-backdrop" id="railBackdrop" aria-hidden="true"></div>
+
+    <main class="main">
+      <header class="topbar">
+        <button id="toggleRail" class="icon-btn rail-toggle" title="Histórico" aria-label="Histórico">☰</button>
+        <div class="selectors">
+          <label class="sr-only" for="providerSelect">Provedor</label>
+          <select id="providerSelect" title="Provedor de IA"></select>
+          <label class="sr-only" for="modelSelect">Modelo</label>
+          <select id="modelSelect" title="Modelo"></select>
+        </div>
+        <div class="ctx" id="ctxChip" title="Contexto enviado ao modelo">
+          <span id="ctxLabel">sem contexto</span>
+          <button id="ctxEdit" class="chip-btn">editar</button>
+        </div>
+        <button id="expand" class="icon-btn" title="Abrir em janela" aria-label="Abrir em janela">⤢</button>
+      </header>
+
+      <section class="messages" id="messages" aria-live="polite"></section>
+
+      <div class="empty" id="empty">
+        <div class="empty-mark" aria-hidden="true">DZ<span>23</span></div>
+        <h1 id="greeting">Boa noite.</h1>
+        <p class="empty-sub">Pergunte sobre o gráfico, a estratégia ou o experimento em foco.</p>
+        <div class="suggestions" id="suggestions"></div>
+      </div>
+
+      <p class="hint setup-hint" id="setupHint" hidden>Sem gateway: o gráfico continua sendo detectado, mas a IA não responde. Inicie <code>npm run gateway</code>; com o host nativo instalado o pareamento é automático — senão, cole o token em ⚙.</p>
+      <div class="chips" id="chips" aria-live="polite"></div>
+      <div class="sofia-row">
+        <button type="button" id="sofia" class="sofia-btn" title="Pergunta aos especialistas e mostra o consenso">
+          Sofia · especialistas
+        </button>
+        <span class="sofia-state" id="sofiaState"></span>
+      </div>
+      <button type="button" id="chartChip" class="chart-chip" aria-haspopup="dialog" title="Detalhes do gráfico ativo">
+        <span class="chart-dot" id="chartDot" aria-hidden="true"></span>
+        <span id="chartLabel">Sem gráfico ativo</span>
+        <span class="chart-caret" aria-hidden="true">▾</span>
+      </button>
+      <form class="composer" id="composer">
+        <textarea id="input" rows="1" placeholder="Pergunte sobre o gráfico…" aria-label="Mensagem"></textarea>
+        <input id="files" type="file" multiple hidden accept=".txt,.csv,.md,.json,text/plain,text/csv,text/markdown,application/json">
+        <button type="button" id="attach" class="icon-btn" title="Anexar texto (CSV, JSON, MD, TXT)" aria-label="Anexar arquivo de texto">📎</button>
+        <button type="button" id="send" class="send" title="Enviar (Enter)">Enviar</button>
+        <button type="button" id="stop" class="stop" hidden>Parar</button>
+      </form>
+      <p class="disclaimer">Respostas podem estar erradas. Confirme números e decisões. Nada aqui executa ordens.</p>
+    </main>
+  </div>
+
+  <dialog id="settings" class="sheet">
+    <form method="dialog" class="sheet-body">
+      <div class="sheet-head">
+        <h2>Configurações</h2>
+        <span class="sheet-state" id="settingsState">—</span>
+        <button type="button" id="closeSettings" class="sheet-close" aria-label="Fechar configurações" title="Fechar (Esc)">×</button>
+      </div>
+      <div class="profile" id="settingsProfile">
+        <span class="avatar" id="settingsAvatar" aria-hidden="true">L</span>
+        <div class="profile-text">
+          <strong id="settingsUser">local</strong>
+          <span class="profile-sub">perfil local · nada sai desta máquina</span>
+        </div>
+      </div>
+      <p class="section-label">Conta</p>
+      <label>Nome de exibição
+        <input id="settingsUserInput" type="text" placeholder="seu nome" autocomplete="off">
+      </label>
+      <p class="section-label">Gateway</p>
+      <label>URL do gateway
+        <input id="gatewayUrl" type="url" placeholder="http://127.0.0.1:8777" autocomplete="off">
+      </label>
+      <label>Token do gateway
+        <input id="gatewayToken" type="password" placeholder="cole o token local" autocomplete="off">
+      </label>
+      <div class="providers" id="providerSettings"></div>
+      <div class="conn-test">
+        <button type="button" id="testConnection" class="chip-btn">Testar conexão</button>
+        <button type="button" id="openFullSettings" class="chip-btn">Configurações completas</button>
+        <span class="conn-result" id="connResult">—</span>
+      </div>
+      <p class="hint">O gráfico é detectado <strong>sem</strong> o gateway; o token só libera a IA. Gere um com <code>node -e "console.log(require('crypto').randomUUID())"</code> e use o mesmo valor em <code>DZ23_GATEWAY_TOKEN</code>.</p>
+      <p class="hint">As chaves dos provedores ficam no processo local (<code>gateway/config.json</code> ou variáveis de ambiente). Esta página nunca recebe uma chave.</p>
+      <menu>
+        <button value="cancel">Fechar</button>
+        <button id="saveSettings" value="save" class="primary">Salvar</button>
+      </menu>
+    </form>
+  </dialog>
+
+  <dialog id="chartDialog" class="sheet">
+    <form method="dialog" class="sheet-body">
+      <h2>Gráfico ativo</h2>
+      <div class="action-row">
+        <label>ativo <input id="actSymbol" type="text" placeholder="ETHUSDT" autocomplete="off"></label>
+        <label>timeframe
+          <select id="actTimeframe">
+            <option value="">manter</option>
+            <option value="1m">1m</option><option value="5m">5m</option><option value="15m">15m</option>
+            <option value="1h">1h</option><option value="4h">4h</option><option value="1D">1D</option><option value="1W">1W</option>
+          </select>
+        </label>
+        <button type="button" id="applyAction" class="primary">Aplicar no gráfico</button>
+        <button type="button" id="compareTimeframes" class="chip-btn">Comparar 15m · 1h · 4h</button>
+        <label class="inline-field">comparar com <input id="compareSymbol" type="text" placeholder="ETHUSDT" autocomplete="off"></label>
+        <button type="button" id="compareAssets" class="chip-btn">Comparar ativos</button>
+      </div>
+      <p id="actionResult" class="action-result"></p>
+      <p id="compareResult" class="action-result" hidden></p>
+      <pre class="preview" id="chartDetail">Nenhuma aba do TradingView detectada.</pre>
+      <menu><button value="close">Fechar</button></menu>
+    </form>
+  </dialog>
+
+  <dialog id="ctxDialog" class="sheet">
+    <form method="dialog" class="sheet-body">
+      <h2>Contexto do trading</h2>
+      <label>Ativo <input id="ctxAsset" type="text" placeholder="BTCUSDT" autocomplete="off"></label>
+      <label>Timeframe <input id="ctxTimeframe" type="text" placeholder="1h" autocomplete="off"></label>
+      <label>Estratégia <input id="ctxStrategy" type="text" placeholder="nome da estratégia" autocomplete="off"></label>
+      <label>Memória desta estratégia (vai no prompt, separada por usuário e estratégia)
+        <textarea id="ctxMemory" rows="3" placeholder="uma regra por linha"></textarea>
+      </label>
+      <label>Notas do experimento
+        <textarea id="ctxNotes" rows="3" placeholder="parâmetros, período, observações"></textarea>
+      </label>
+      <pre class="preview" id="ctxPreview"></pre>
+      <menu>
+        <button value="cancel">Cancelar</button>
+        <button id="saveCtx" value="save" class="primary">Aplicar</button>
+      </menu>
+    </form>
+  </dialog>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

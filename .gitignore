@@ -1,0 +1,46 @@
+.idea
+*.mp4
+assistant-ext.zip
+tv-page-objects.js
+.raw/
+
+# secrets
+*.env
+!*.env.example
+
+# Node dependencies
+node_modules/
+
+# akmon model routing — per-user/per-session artifacts (never committed)
+.claude/model-routing.local.json
+.claude/model-routing.log
+.claude/second-opinion/
+.claude/agents/k_*.md
+
+# test browser for the tv-browser-test skill — profile (TradingView sign-in), Chrome for Testing, launch state
+_aitna/.browser/
+
+# github-issues skill — the owner's local triage backlog and sync watermarks (never committed)
+_aitna/TASKS.local.md
+_aitna/.akmon.local.toml
+
+# Local gateway credentials and token (never committed)
+gateway/config.json
+gateway/config.local.json
+
+
+# Build artifacts and local secrets
+dist/
+*.zip
+.dz23/
+extension/manifest.local.json
+extension/manifest.release.json
+
+
+dz23/data/
+
+# Artefatos gerados pela entrega (o pacote é reconstruído por `npm run release:pack`)
+assistant-ext.zip.sha256
+coverage/
+*.log
+

@@ -1,0 +1,9 @@
+{
+  "name": "com.dz23.gateway",
+  "description": "DZ23 gateway supervisor — starts and stops the local gateway for the extension",
+  "path": "C:\\Users\\lmpra\\Documents\\tradingview-assistant-chrome-extension-main\\native-host\\dz23-host.cmd",
+  "type": "stdio",
+  "allowed_origins": [
+    "chrome-extension://ejmflepgfmffgicdjdaigdfdcacehgma/"
+  ]
+}

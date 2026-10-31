@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DZ23 Research — Resultados do backtest</title>
+<style>
+  :root { --bg:#0b0f14; --panel:#111721; --panel2:#151d29; --line:#1f2a37; --text:#e6edf5; --muted:#8b9bb0; --accent:#38d6b0; --danger:#ff6b6b; --warn:#f5b96b; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:14px/1.5 -apple-system,"Segoe UI",Roboto,Arial,sans-serif; }
+  header { display:flex; align-items:center; gap:12px; padding:10px 16px; border-bottom:1px solid var(--line); background:var(--panel); }
+  h1 { font-size:15px; margin:0; font-weight:600; }
+  h1 span { color:var(--accent); padding:0 1px; }
+  main { padding:16px; max-width:1200px; margin:0 auto; display:grid; gap:14px; }
+  section { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:12px 14px; }
+  section h2 { font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin:0 0 10px; font-weight:600; }
+  textarea { width:100%; min-height:90px; background:var(--panel2); color:var(--text); border:1px solid var(--line); border-radius:8px; padding:10px; font:12px ui-monospace,Menlo,Consolas,monospace; }
+  input[type=text], input[type=number], select { background:var(--panel2); color:var(--text); border:1px solid var(--line); border-radius:8px; padding:6px 8px; font:inherit; }
+  .row { display:flex; flex-wrap:wrap; gap:8px; align-items:flex-end; margin-top:10px; }
+  .row label { display:flex; flex-direction:column; gap:4px; font-size:11.5px; color:var(--muted); }
+  button { border:1px solid var(--accent); background:var(--accent); color:#06231c; font-weight:600; border-radius:8px; padding:8px 14px; cursor:pointer; }
+  button.secondary { background:var(--panel2); color:var(--text); border-color:var(--line); }
+  button:disabled { opacity:.45; cursor:not-allowed; }
+  table { border-collapse:collapse; width:100%; font-size:12.5px; }
+  th, td { border:1px solid var(--line); padding:4px 8px; text-align:right; }
+  th:first-child, td:first-child, th:nth-child(2), td:nth-child(2) { text-align:left; }
+  thead th { background:var(--panel2); color:var(--muted); font-weight:600; }
+  .heat td { text-align:center; color:#04110d; font-weight:600; }
+  .warn { color:var(--warn); }
+  .bad { color:var(--danger); }
+  .muted { color:var(--muted); }
+  .pill { display:inline-block; border:1px solid var(--line); border-radius:999px; padding:1px 9px; font-size:11.5px; color:var(--muted); margin-right:6px; }
+  #status:empty { display:none; }
+  #status { font-size:12.5px; }
+  #status.bad { color:var(--danger); }
+  .findings { display: flex; flex-direction: column; gap: 4px; margin-top: 8px; }
+  .finding { display: flex; gap: 8px; align-items: baseline; font-size: 12px; padding: 6px 8px; border-radius: 6px; border: 1px solid #1f2a37; background: #111721; }
+  .finding-where { color: #8b9bb0; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .finding.error { border-left: 3px solid #ff6b6b; }
+  .finding.warning { border-left: 3px solid #f5b96b; }
+  .finding.info { border-left: 3px solid #38d6b0; }
+  .status.ok { color: #38d6b0; }
+  .status.bad { color: #ff6b6b; }
+</style>
+</head>
+<body>
+<header><h1>DZ23<span>·</span>Research</h1><span class="pill">resultado do backtest → experimento</span></header>
+<main>
+  <section>
+    <h2>1. Resultado</h2>
+    <p class="muted">Cole o CSV exportado pela extensão (<em>Baixar resultados</em>) ou escolha o arquivo. A primeira linha são as colunas do relatório e as colunas <code>__parametro</code> são os parâmetros testados.</p>
+    <textarea id="csv" placeholder="&quot;Net PnL: All&quot;,&quot;Profit factor: All&quot;,&quot;__length&quot;,&quot;__risk&quot;&#10;100,1.2,10,0.01&#10;400,1.5,20,0.01" aria-label="CSV do resultado"></textarea>
+    <div class="row">
+      <label>arquivo CSV<input id="file" type="file" accept=".csv,text/csv"></label>
+      <label>métrica otimizada<select id="metric"></select></label>
+      <button id="analyse" type="button">Analisar</button>
+      <button id="clear" type="button" class="secondary">Limpar</button>
+    </div>
+    <div id="status"></div>
+  </section>
+
+  <section id="experiment" hidden>
+    <h2>2. Experimento</h2>
+    <div class="row">
+      <label>estratégia<input id="strategy" type="text" value="smc-breakout"></label>
+      <label>versão<input id="version" type="text" value="1.0.0"></label>
+      <label>ativo<input id="asset" type="text" value="BTCUSDT"></label>
+      <label>timeframe<input id="timeframe" type="text" value="1h"></label>
+      <label>provedor de dados<input id="provider" type="text" value="tradingview-ui"></label>
+      <label>de<input id="from" type="text" value="2024-01-01"></label>
+      <label>até<input id="to" type="text" value="2024-12-31"></label>
+      <button id="download" type="button">Baixar experimento JSON</button>
+    </div>
+    <p id="summary" class="muted"></p>
+  </section>
+
+  <section id="topN" hidden><h2>3. Top resultados</h2><div id="table"></div></section>
+  <section id="heat" hidden><h2>4. Heatmap de parâmetros</h2>
+    <div class="row"><label>eixo X<select id="xParam"></select></label><label>eixo Y<select id="yParam"></select></label></div>
+    <div id="heatmap"></div>
+  </section>
+  <section id="warnings" hidden><h2>5. Avisos e limitações</h2><ul id="warnList"></ul></section>
+<section id="pine">
+        <h2>Pine Script</h2>
+        <p class="hint">Cole o script. A validação é estática: aponta declaração, versão, sintaxe, look-ahead, barra
+          futura, chamadas antigas e estratégia sem custos/sem saída. Ela não compila nem executa o script.</p>
+        <textarea id="pineSource" spellcheck="false" placeholder="//@version=5&#10;strategy(&quot;exemplo&quot;, overlay = true)&#10;..."></textarea>
+        <div class="row">
+          <label>arquivo .pine<input id="pineFile" type="file" accept=".pine,.txt"></label>
+          <button id="pineValidate" type="button">Validar</button>
+          <button id="pineCopy" type="button" class="secondary">Copiar relatório</button>
+          <button id="pineClear" type="button" class="secondary">Limpar</button>
+        </div>
+        <div id="pineStatus" class="status"></div>
+        <div id="pineFindings" class="findings"></div>
+      </section>
+</main>
+<script type="module" src="app.js"></script>
+</body>
+</html>

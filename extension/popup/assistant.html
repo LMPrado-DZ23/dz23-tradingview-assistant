@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>TradingView Assistant</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="../lib/i18n.js"></script>
+    <script src="../lib/config-bridge.js"></script>
+    <script src="metrics-options.js"></script>
+    <script src="assistant.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<div class="wrapper">
+    <div id="whatsNewBar" class="whats-new-bar" hidden>
+        <button id="whatsNewOpen" class="whats-new-open"></button>
+        <button id="whatsNewDismiss" class="close-button" data-i18n-title="popup_whats_new_title"
+                data-i18n-aria-label="popup_whats_new_title">&#10005;</button>
+    </div>
+    <div class="popup_header">
+        <button id="openSettingsPage" class="settings-link" type="button" title="Configurações do DZ23">⚙</button>
+        <h2 class="brand"><span class="brand-dot" aria-hidden="true"></span>DZ23<span class="brand-sep">·</span><span class="brand-sub">TradingView Assistant</span></h2>
+    </div>
+    <div class="tabs__links" role="tablist">
+        <a data-tab="1" role="tab" tabindex="0" data-i18n="popup_tab_testing">Testing a strategy</a>
+        <a data-tab="2" role="tab" tabindex="0" data-i18n="popup_tab_results">Results</a>
+        <a data-tab="3" role="tab" tabindex="0" data-i18n="popup_tab_signals">External signals</a>
+        <a data-tab="4" role="tab" tabindex="0" data-i18n="popup_tab_options">Options &amp; Tools</a>
+        <a data-tab="5" role="tab" tabindex="0" data-i18n="popup_tab_help">Help</a>
+    </div>
+    <div class="content">
+        <div class="tabs">
+            <div id="content-1" role="tabpanel">
+                <div id="warningBacktest" class="subheader">
+                    <p data-i18n-html="popup_tv_english_html">The extension works with the <a href="https://www.tradingview.com/chart" target="_blank">English
+                        version</a> of TradingView</p>
+                </div>
+                <div class="row">
+                    <div class="details">
+                        <details open>
+                            <summary data-i18n="popup_opt_summary">Strategy optimization parameters</summary>
+                            <div>
+                                <div class="param-container">
+                                    <div class="param-box">
+                                        <div>
+                                            <label class="checkbox-minmax">
+                                                <input id="optMinmax" type="checkbox" checked>
+                                                <b></b>
+                                            </label>
+                                            <span data-i18n="popup_opt_value_of">value of</span>
+                                        </div>
+                                        <div>
+                                            <select id="optParamName" name="optParamName">
+                                            </select>
+                                        </div>
+                                        <div data-i18n="popup_opt_by">by method</div>
+                                        <div>
+                                            <select id="optMethod" name="method">
+                                                <option value="annealing" data-i18n="popup_method_annealing">Annealing</option>
+                                                <option value="random" selected="selected" data-i18n="popup_method_random">Random</option>
+                                                <option value="random improvement" data-i18n="popup_method_random_improvement">Random improvement</option>
+                                                <option value="sequential" data-i18n="popup_method_sequential">Sequential improvement</option>
+                                                <option value="brute force" data-i18n="popup_method_bruteforce">Brute force</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="param-container">
+                                    <span data-i18n="popup_filter_label">Filter to use the best results corresponding to the parameters:</span>
+                                    <div class="param-box">
+
+                                        <div class="switch-toggle switch-3 switch-candy">
+                                            <input id="optFilterOff" name="state-d" type="radio" checked="checked"/>
+                                            <label for="optFilterOff" data-i18n="popup_filter_off">OFF</label>
+
+                                            <input id="optFilterMore" name="state-d" type="radio"/>
+                                            <label for="optFilterMore" class="disabled" data-i18n="popup_filter_more">More</label>
+
+                                            <input id="optFilterLess" name="state-d" type="radio"/>
+                                            <label for="optFilterLess" data-i18n="popup_filter_less">Less</label>
+                                            <div id="filterParam">
+                                                <span data-i18n="popup_filter_than">than</span>
+                                                <input id="optFilterValue" type="number" name="method"
+                                                       style="width: 5em" value="5">
+                                                <span data-i18n="popup_filter_for">for</span>
+                                                <select id="optFilterParamName" name="optFilterParamName">
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="param-container">
+                                    <div class="param-box">
+                                        <div>
+                                            <input id="shouldTestTF" type="checkbox"/>
+                                            <label for="shouldTestTF" data-i18n="popup_tf_label">Backtesting the strategy on timeframes (divided by
+                                                comma)</label>
+                                        </div>
+                                        <div><input id="listOfTF" type="text" placeholder="1m,2h,1D,2W,1M"
+                                                    data-i18n-title="popup_tf_title"
+                                                    title="Set list of timeframes, where symbol format is: 1m - minutes, 2h - hours, 3D - days, 4W - weeks, 5M - months"
+                                                    style="width: 10em">
+                                            <label for="listOfTF" class="disabled"></label></div>
+
+                                    </div>
+                                    <span style="font-size: 80%" data-i18n="popup_cycles_hint">The recommendation is to use around 100-200 cycles or less per test.</span>
+                                </div>
+                            </div>
+                        </details>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column left">
+                        <p data-i18n="popup_run_desc">Run a user-controlled strategy test using the loaded or generated parameter range.</p>
+                    </div>
+                    <div class="column right">
+                        <div style="align-content: center">
+                            <button id="testStrategy" class="button button-green" data-i18n="popup_run_button">Test strategy</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column left">
+                        <p data-i18n="popup_deep_note">Deep backtesting (for TV premium subscription) currently works as standard backtesting. Activate it manually.</p>
+<!--                        <p><label for="deepStartDate">The start date</label>-->
+<!--                            <input id="deepStartDate" type="text" name="deepStartDate"-->
+<!--                                   pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"-->
+<!--                                   placeholder="2021-10-02" title="Set date in ISO format" style="width: 10em"-->
+<!--                                   required/></p>-->
+                    </div>
+<!--                    <div class="column right">-->
+<!--                        <div style="align-content: center">-->
+<!--                            <button id="deepTestStrategy" class="button button-green">Deep backtesting</button>-->
+<!--                        </div>-->
+<!--                    </div>-->
+                </div>
+
+                <div class="row">
+                    <div class="column left">
+                        <p data-i18n="popup_template_desc">Getting a template for setting the testing parameters of the current strategy.</p>
+                    </div>
+                    <div class="column right">
+                        <div style="align-content: center">
+                            <button id="getStrategyTemplate" class="button button-blue" data-i18n="popup_template_button">Get template</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column left">
+                        <p><span data-i18n="popup_upload_csv_lead">To test the profit of strategies, upload a CSV file in which the lines correspond to the
+                            strategy parameters and contain the testing range.</span>
+                            <a href="data:text/csv;charset=utf-8,Parameter,From,To,Step,Default,Priority
+SMALong,40,70,5,20,1
+EMAShort,5,15,1,21,2
+%22Check MACD%22,false,true,,false,3
+%22Stop Loss%22,1,5,0.51,4%0A" download="strategy_template.csv" data-i18n="popup_upload_csv_sample">Sample template </a></p>
+                    </div>
+                    <div class="column right">
+                        <div style="align-content: center">
+                            <button id="uploadStrategyTestParameters" class="button button-blue" data-i18n="popup_upload_params_button">Upload parameters
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="content-2" role="tabpanel">
+                <div id="warningResults" class="subheader">
+                    <p data-i18n-html="popup_tv_english_html">The extension works with the <a href="https://www.tradingview.com/chart" target="_blank">English
+                        version</a> of TradingView</p>
+                </div>
+                <div class="row">
+                    <div class="column left">
+                        <p data-i18n="popup_preview_desc">Quick overview of the results of the last testing for this ticker and timeframe.</p>
+                    </div>
+                    <div class="column right">
+                        <div style="align-content: center">
+                            <button id="previewStrategyTestResults" class="button button-blue" data-i18n="popup_preview_button">Preview results
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column left">
+                        <p data-i18n="popup_download_desc">To download the results of the last testing for this ticker and timeframe.</p>
+                    </div>
+                    <div class="column right">
+                        <div style="align-content: center">
+                            <button id="downloadStrategyTestResults" class="button button-blue" data-i18n="popup_download_button">Download results
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column left">
+                        <p data-i18n="popup_3d_desc">View a 3D chart with the results</p>
+                    </div>
+                    <div class="column right">
+                        <div style="align-content: center">
+                            <button id="show3DChart" class="button button-blue" data-i18n="popup_3d_button">3D Chart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="content-3" role="tabpanel">
+                <div id="warningSignals" class="subheader">
+                    <p data-i18n-html="popup_tv_english_html">The extension works with the <a href="https://www.tradingview.com/chart" target="_blank">English
+                        version</a> of TradingView</p>
+                </div>
+                <div class="row">
+                    <div class="column left">
+                        <span data-i18n="popup_signals_step1">To display the signals, you need to create a pine script named 'iondvSignals' from the</span>
+                        <a href="data:text/plain;charset=utf-8,//©akumidv
+//@version=4
+study(%22iondv Signals%22,shorttitle=%22iondvSignals%22,overlay=true)
+strTSBuy=input(%22%22,%22TSBuy%22)
+strTSSell=input(%22%22,%22TSSell%22)
+tickerName=input(%22%22,%22Ticker%22)
+timeFrame=input(%22%22,%22Timeframe%22)
+var arrTSBuy=str.split(strTSBuy,%22,%22)
+var arrTSSell=str.split(strTSSell,%22,%22)
+plotchar(tickerName==syminfo.ticker and array.includes(arrTSBuy,tostring(time))?low:na,location=location.belowbar,color=color.green,char='▲',title='Buy')
+plotchar(tickerName==syminfo.ticker and array.includes(arrTSSell,tostring(time))?high:na,location=location.abovebar,color=color.red,char='▼',title='Sell')%0A"
+                           download="iondv_signals_pinescript.txt">
+                            <span data-i18n="popup_signals_link_file">file</span></a>
+                        <span data-i18n="popup_signals_step2">and add it to the chart. After that, upload the signals from the file created by the</span>
+                        <a href="data:text/csv;charset=utf-8,timestamp,ticker,timeframe,signal
+1625718600000,BTCUSDT,1m,BUY
+2021-07-27T01:00:00Z,BABA,1H,SELL%0A" download="signals_template.csv"><span data-i18n="popup_signals_link_template">template</span></a><span data-i18n="popup_signals_step3">. The signals are stored in the browser, to activate them, open the properties of the created indicator named 'iondvSignals'.</span>
+                    </div>
+                    <div class="column right">
+                        <div style="align-content: center">
+                            <button id="uploadSignals" class="button button-ocean" data-i18n="popup_upload_signals_button">Upload signals</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="content-4" role="tabpanel">
+                <div class="header"></div>
+                <div class="row">
+                    <div class="column left">
+                        <p data-i18n="popup_research_desc">Abre a pesquisa DZ23: transforma o CSV de resultados em Top N, heatmap de parâmetros e experimento validado (JSON).</p>
+                    </div>
+                    <div class="column right">
+                        <div style="align-content: center">
+                            <button id="openResearch" class="button button-blue" data-i18n="popup_research_button">Abrir pesquisa</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column left">
+                        <p data-i18n="popup_copilot_desc">Abre o copiloto DZ23 no painel lateral: conversas com o provedor de IA que você configurar no gateway local.</p>
+                    </div>
+                    <div class="column right">
+                        <div style="align-content: center">
+                            <button id="openCopilot" class="button button-ocean" data-i18n="popup_copilot_button">Abrir copiloto</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column left">
+                        <p data-i18n="popup_delay_desc">Delay between backtests to reduce continuous TradingView UI activity and lower the risk of
+                            suspicious account activity.</p>
+                        <p><label data-i18n="popup_delay_random">Random delay for the specified value</label>
+                            <input id="randomDelay" type="checkbox" checked/></p>
+                    </div>
+                    <div class="column right">
+                        <input id="backtestDelay" type="number"
+                               placeholder="1.5" value="1.75" style="width: 5em"/>
+                        <label for="backtestDelay" data-i18n="popup_sec">sec.</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column left">
+                        <p data-i18n="popup_loading_desc">The maximum waiting time for data of the strategy, if the results table has not been updated
+                            (2 times more if used for deep backtesting). Reduce to speed up on simple strategies,
+                            increase it if data extraction errors happen often.</p>
+                    </div>
+                    <div class="column right">
+                        <input id="dataLoadingTime" type="number"
+                               placeholder="45" value="45" style="width: 5em"/>
+                        <label for="dataLoadingTime" data-i18n="popup_sec">sec.</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column left">
+                        <p data-i18n="popup_skip_best_desc">Skip initial best parameters from the previous backtest.</p>
+                        <p></p>
+                    </div>
+                    <div class="column right">
+                        <label></label>
+                        <input id="shouldSkipInitBestResult" type="checkbox"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column left">
+                        <p data-i18n="popup_extra_tabs_desc">Also parse the report tabs for metrics missing from TradingView data (CAGR, expectancy,
+                            outliers, streaks, periodical, time patterns). Slower: every tab is opened on each backtest.
+                            Applies only when the report is read from TradingView data (the fast mode). When the
+                            extension falls back to parsing the report page, all tabs are parsed anyway and this option
+                            is ignored.</p>
+                        <p></p>
+                    </div>
+                    <div class="column right">
+                        <label></label>
+                        <input id="parseExtraReportTabs" type="checkbox"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column left">
+                        <p data-i18n="popup_api_desc">Experimental, faster: set strategy parameters through the TradingView chart API instead of the
+                            strategy dialog. Risk: TradingView may change this API without notice (the test then falls
+                            back to the dialog), and automated use of it may violate TradingView terms and could lead
+                            to account restrictions. Use at your own risk.</p>
+                        <p></p>
+                    </div>
+                    <div class="column right">
+                        <label></label>
+                        <input id="setParamsByApi" type="checkbox"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column left">
+                        <p data-i18n="popup_skip_wait_desc">Download results without waiting for a click on the OK button.</p>
+                        <p></p>
+                    </div>
+                    <div class="column right">
+                        <label></label>
+                        <input id="shouldSkipWaitingForDownload" type="checkbox" checked/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column left">
+                        <p data-i18n="popup_clear_desc">Clear all stored data</p>
+                    </div>
+                    <div class="column right">
+                        <div style="align-content: center">
+                            <button id="clearAll" class="button button-red" data-i18n="popup_clear_button">Clear all</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div id="content-5" class="help" role="tabpanel">
+                <details>
+                    <summary data-i18n="popup_help_whats_new">What's new</summary>
+                    <div id="helpChangelog" class="changelog"></div>
+                </details>
+                <details open>
+                    <summary data-i18n="popup_help_about">About and contacts</summary>
+                    <ul class="help-links">
+                        <li><a href="https://github.com/akumidv/tradingview-assistant-chrome-extension"
+                               target="_blank" data-i18n="popup_help_repo_link">Description and source code</a>
+                            <span data-i18n="popup_help_repo_rest">of the extension.</span></li>
+                        <li><span data-i18n="popup_help_issues_lead">Report a problem in</span> <a
+                                href="https://github.com/akumidv/tradingview-assistant-chrome-extension/issues"
+                                target="_blank">GitHub issues</a><span data-i18n="popup_help_issues_rest">: attach a full screenshot of the TradingView page and,
+                            if possible, the browser console output (F12, Console tab).</span></li>
+                        <li><a href="https://github.com/akumidv/tradingview-assistant-chrome-extension#contacts"
+                               target="_blank" data-i18n="popup_help_contact_link">Contact the developer</a>.</li>
+                    </ul>
+                </details>
+                <details open>
+                    <summary data-i18n="popup_help_methods">Optimization methods</summary>
+                    <dl class="help-methods">
+                        <dt><span data-i18n="popup_method_random">Random</span> <span class="muted" data-i18n="popup_help_default">(default)</span></dt>
+                        <dd data-i18n="popup_method_random_dd">Selects random values for all parameters at once on every test.</dd>
+                        <dt data-i18n="popup_method_random_improvement">Random improvement</dt>
+                        <dd data-i18n="popup_method_random_improvement_dd">Changes one random parameter to a random value from its whole range. A better result
+                            becomes the new state, and the next changes start from it.</dd>
+                        <dt data-i18n="popup_method_sequential">Sequential improvement</dt>
+                        <dd data-i18n="popup_method_sequential_dd">Improves the best state already found, one parameter at a time: all values of the first
+                            parameter are checked, the best one is kept, then the next parameter is checked, and so on.
+                            It does not search the whole parameter space.</dd>
+                        <dt data-i18n="popup_method_annealing">Annealing</dt>
+                        <dd data-i18n-html="popup_method_annealing_dd">Finds a good result in <a href="https://en.wikipedia.org/wiki/Simulated_annealing"
+                                                      target="_blank">fewer steps</a>. It starts from the best state
+                            and changes parameters to random values; a better result becomes the new state. As the tests
+                            go on, the spread of values narrows ("cools down") around the best values found: first it
+                            explores the whole space, at the end it refines the best state. From time to time it
+                            changes all parameters at once, so it does not get stuck in one area like the sequential
+                            method.</dd>
+                        <dt data-i18n="popup_method_bruteforce">Brute force</dt>
+                        <dd data-i18n="popup_method_bruteforce_dd">Tests every combination of values in the parameter space.</dd>
+                    </dl>
+                    <p class="help-more" data-i18n-html="popup_help_more_html">More details in the
+                        <a href="https://github.com/akumidv/tradingview-assistant-chrome-extension#optimization-methods"
+                           target="_blank">repository description</a>.</p>
+                </details>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <p class="footer-text" data-i18n="popup_footer">Automated use of TradingView may violate its rules and lead to an account ban. The
+            extension does not bypass its protections but repeats UI actions: use it carefully, at your own risk.</p>
+    </div>
+
+    <div id="whatsNewPanel" class="whats-new-panel" hidden>
+        <div class="whats-new-panel-header">
+            <h3 data-i18n="popup_whats_new_header">What's new</h3>
+            <button id="whatsNewClose" class="close-button" data-i18n-title="popup_whats_new_title"
+                    data-i18n-aria-label="popup_whats_new_title">&#10005;</button>
+        </div>
+        <div id="whatsNewText" class="changelog whats-new-panel-body"></div>
+    </div>
+
+    <div id="shim"></div>
+    <div id="msgbx">
+        <div class="msg-header">
+            <h5 data-i18n="popup_msg_warning">Warning.</h5>
+        </div>
+        <p id="msg-text"></p>
+        <div style="text-align: center">
+            <button id="closeMsg" class="button" data-i18n="popup_msg_close">Close</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>

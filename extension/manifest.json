@@ -1,0 +1,99 @@
+{
+  "manifest_version": 3,
+  "author": "Andrei Kuminov (akumidv)",
+  "description": "__MSG_ext_description__",
+  "name": "__MSG_ext_name__",
+  "default_locale": "en",
+  "version": "2.17.0",
+  "icons": {
+    "16": "images/tv_assist_16.png",
+    "32": "images/tv_assist_32.png",
+    "48": "images/tv_assist_48.png",
+    "64": "images/tv_assist_64.png",
+    "128": "images/tv_assist_128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.tradingview.com/chart/*"
+      ],
+      "js": [
+        "lib/i18n.js",
+        "content_scripts/log.js",
+        "content_scripts/selector.js",
+        "content_scripts/page.js",
+        "content_scripts/ui.js",
+        "content_scripts/tv.js",
+        "content_scripts/tvChart.js",
+        "content_scripts/file.js",
+        "content_scripts/storage.js",
+        "content_scripts/signal.js",
+        "content_scripts/model.js",
+        "content_scripts/backtest.js",
+        "content_scripts/action.js",
+        "content_scripts/controller.js"
+      ],
+      "run_at": "document_end"
+    },
+    {
+      "matches": [
+        "https://www.tradingview.com/*",
+        "https://*.tradingview.com/*"
+      ],
+      "js": [
+        "content_scripts/chartBridge.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "permissions": [
+    "storage",
+    "unlimitedStorage",
+    "activeTab",
+    "sidePanel",
+    "tabs",
+    "scripting",
+    "nativeMessaging"
+  ],
+  "host_permissions": [
+    "http://127.0.0.1/*",
+    "https://*.tradingview.com/*"
+  ],
+  "side_panel": {
+    "default_path": "copilot/index.html"
+  },
+  "action": {
+    "default_icon": {
+      "16": "images/tv_assist_16.png",
+      "32": "images/tv_assist_32.png",
+      "48": "images/tv_assist_48.png",
+      "64": "images/tv_assist_64.png",
+      "128": "images/tv_assist_128.png"
+    },
+    "default_title": "__MSG_ext_name__",
+    "default_popup": "popup/assistant.html"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "page-context.js",
+        "fonts/fa-solid-900.woff2",
+        "lib/plotly.min.js"
+      ],
+      "matches": [
+        "https://*.tradingview.com/*"
+      ]
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  },
+  "options_ui": {
+    "page": "settings/index.html",
+    "open_in_tab": true
+  },
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAl4NCNzPRPxWObli91LVXd/LaHg5s//kBlb3eln82I75GQhooapD+gPk7S+E05aPJE7zXQbS4yjMrahCZozKLDv4f5qYfx5/EJiy1LHlKcJyAMT9HhGMls4u07TcfP8cqI9f8I2whrLMFC4pAtgGD6CElthXeyPF7DzclFAoE9BW3H6N16/yj0RqPRtnSlXMjCRpM9lgf2CZdsOBueDumIBT1EqlOGS26Z05bj8n3Ji/qEM5Ru8tH70T8ZZkbjage2nTj5jw8d0FAC3Vj9OzDejk7jI3ZqyEXByGUPCR69R3HPcMAnhupCYrwIdjSpaAV3yTZyVnU1FnVCjJ3NCMQ9wIDAQAB"
+}
