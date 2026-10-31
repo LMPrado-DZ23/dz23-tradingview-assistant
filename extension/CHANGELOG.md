@@ -12,6 +12,13 @@ the whole file. Format and rendering rules: [_aitna/skills/changelog](../_aitna/
 - `npm run gateway:dev`: one command that reuses the token in `~/.dz23/gateway-token`, loads
   `~/.dz23/providers.env` when present and starts the gateway on 127.0.0.1:8777.
 - Candle provenance in the system prompt (`Fonte dos candles: BINANCE`), with the OHLCV summary the model reads.
+- Replay of a running requestId is refused: two requests with the same id coexisted in the registry, so `POST /cancel`
+  aborted only the second — the first kept streaming and had **no way to be cancelled**. §3.5 asks for replay
+  protection; the duplicate is now a 400 "already running" that says why, and a test proves the duplicate is rejected
+  *and* that the original is still cancellable (deterministic via the stall provider, not a timing race). Verified
+  first that the rate limiter really answers 429 with `retry-after` — my grep had missed that test, so my own
+  duplicate test was deleted instead of kept.
+
 - Install manual written from executed commands (`docs/INSTALACAO.md`): every step was run here first — `gateway:dev`
   answered `status=ok, providers=9` and exited cleanly with its job, `host:install --dry-run` showed the ID derived from
   the manifest key, `test:e2e` finished **exit 0** against real Chrome. Corrections that came out of running them: the

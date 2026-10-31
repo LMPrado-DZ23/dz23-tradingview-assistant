@@ -212,6 +212,8 @@ export function createGateway ({ config, env = process.env, logger = console }) 
     const { provider, model } = route(providers, { provider: body.provider, model: body.model })
     const chain = buildProviderChain(providers, { provider: provider.id, fallback: body.fallback })
     const requestId = String(body.requestId ?? randomUUID())
+    if (running.has(requestId))
+      throw new GatewayError(ERROR.bad_request, `requestId "${requestId}" is already running: cancelling it would abort the wrong call, so send a new one`)
     const controller = new AbortController()
     running.set(requestId, controller)
     // The client went away mid-answer (closed tab, stop button on the transport side): stop the upstream call

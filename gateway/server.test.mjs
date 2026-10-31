@@ -614,3 +614,38 @@ test('papel de mensagem fora do contrato é recusado, não coagido a "user"', as
     assert.match(String(body.error.message), /role must be one of/)
   }
 })
+
+test('requestId já em uso é recusado, não aceito em silêncio', async () => {
+  // Antes: dois pedidos com o mesmo id coexistiam e o /cancel abortava só o segundo — o primeiro ficava órfão,
+  // sem meio de cancelar. Recusar o duplicado é a proteção contra replay do §3.5.
+  // O provedor /stall segura o stream aberto, então o primeiro pedido continua registrado: nada de corrida.
+  const fake = await startFakeProvider()
+  const config = baseConfig(fake, { timeoutMs: 10_000 })
+  config.providers.openai = { baseUrl: `${fake.url}/stall`, apiKey: 'sk-openai-test', models: ['gpt-test'], defaultModel: 'gpt-test' }
+  const { baseUrl } = await startGateway(config)
+
+  const chat = (requestId) => fetch(`${baseUrl}/chat`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json', ...authorized() },
+    body: JSON.stringify({ provider: 'openai', requestId, messages: [{ role: 'user', content: 'oi' }] }),
+  })
+
+  const first = chat('id-repetido')
+  await sleep(150)                       // o primeiro já está registrado e transmitindo
+  const second = await chat('id-repetido')
+
+  assert.equal(second.status, 400, 'o duplicado precisa ser recusado enquanto o primeiro roda')
+  const json = await second.json()
+  assert.equal(json.error.code, 'bad_request')
+  assert.match(String(json.error.message), /already running/)
+
+  // e o primeiro continua cancelável pelo id — é o que protege contra órfão
+  const cancel = await fetch(`${baseUrl}/cancel`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json', ...authorized() },
+    body: JSON.stringify({ requestId: 'id-repetido' }),
+  })
+  assert.equal(cancel.status, 200)
+  assert.equal((await cancel.json()).cancelled, 'id-repetido')
+  await first.catch(() => null)
+})
