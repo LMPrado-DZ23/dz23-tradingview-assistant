@@ -12,6 +12,13 @@ the whole file. Format and rendering rules: [_aitna/skills/changelog](../_aitna/
 - `npm run gateway:dev`: one command that reuses the token in `~/.dz23/gateway-token`, loads
   `~/.dz23/providers.env` when present and starts the gateway on 127.0.0.1:8777.
 - Candle provenance in the system prompt (`Fonte dos candles: BINANCE`), with the OHLCV summary the model reads.
+- Install manual written from executed commands (`docs/INSTALACAO.md`): every step was run here first — `gateway:dev`
+  answered `status=ok, providers=9` and exited cleanly with its job, `host:install --dry-run` showed the ID derived from
+  the manifest key, `test:e2e` finished **exit 0** against real Chrome. Corrections that came out of running them: the
+  delivery doc told the reader to pass `--extension-id`, which is unnecessary and, with a wrong value, makes the host
+  silently refuse the real extension — the doc now says not to. Prerequisites, the fixed-ID consequence and a symptom table
+  moved into one file instead of being scattered.
+
 - Secrets cannot be committed (`npm run audit:secrets`, in the gate): the first commit was checked by hand, and a manual
   check does not repeat itself. The audit fails when a forbidden path is tracked (gateway config, `.env`, key material,
   `node_modules`, `.zip`, the browser profile) or when tracked content matches a credential pattern — proven twice by

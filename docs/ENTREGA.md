@@ -174,7 +174,9 @@ cd C:\Users\lmpra\Documents\tradingview-assistant-chrome-extension-main
 npm run gateway:dev          # reusa o token de ~/.dz23/gateway-token
 
 # 3. native host (opcional: deixa o gateway subir sozinho)
-npm run host:install -- --extension-id ejmflepgfmffgicdjdaigdfdcacehgma
+npm run host:install
+#    NÃO passe --extension-id: o instalador deriva o ID da chave do manifest.
+#    Um ID errado faz o host recusar a extensão de verdade (allowed_origins).
 #    reinicie o Chrome depois
 
 # 4. verificação
