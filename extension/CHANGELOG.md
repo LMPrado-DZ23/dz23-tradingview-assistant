@@ -12,6 +12,14 @@ the whole file. Format and rendering rules: [_aitna/skills/changelog](../_aitna/
 - `npm run gateway:dev`: one command that reuses the token in `~/.dz23/gateway-token`, loads
   `~/.dz23/providers.env` when present and starts the gateway on 127.0.0.1:8777.
 - Candle provenance in the system prompt (`Fonte dos candles: BINANCE`), with the OHLCV summary the model reads.
+- Permissions are checked against usage (`npm run audit:permissions`, in the gate): §10 forbids asking for generic
+  permissions you do not need, and a store reviewer agrees. Seven permissions and two host origins must each show evidence
+  in the code — or an explicit justification when they are implicit by nature (`unlimitedStorage` lifts the storage quota;
+  `activeTab` is granted by the click that opens the panel). It fails on an unused permission, an unused host origin, and
+  on `cookies` by principle. Proven by declaring `notifications` and `cookies`: three findings, then clean again.
+  Two of my own audits of this were wrong first — shell globs returned false negatives for `scripting` and
+  `nativeMessaging`, which *are* used.
+
 - Replay of a running requestId is refused: two requests with the same id coexisted in the registry, so `POST /cancel`
   aborted only the second — the first kept streaming and had **no way to be cancelled**. §3.5 asks for replay
   protection; the duplicate is now a 400 "already running" that says why, and a test proves the duplicate is rejected
