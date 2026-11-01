@@ -1,0 +1,7 @@
+# Terminador de linha explícito: o repositório guarda LF; só os scripts .cmd do Windows precisam de CRLF.
+# Sem isto, o hash da evidência de aceite muda entre Windows e Linux sem nenhum código ter mudado.
+* text=auto eol=lf
+*.cmd text eol=crlf
+*.bat text eol=crlf
+*.png binary
+*.zip binary

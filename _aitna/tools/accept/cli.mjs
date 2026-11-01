@@ -29,7 +29,7 @@ function sourceHash () {
   }
   walk(join(ROOT, 'extension'))
   for (const file of files.sort())
-    hash.update(file.slice(ROOT.length)).update(readFileSync(file))
+    hash.update(file.slice(ROOT.length)).update(readFileSync(file, 'utf8').replace(/\r\n/g, '\n'))
   return { hash: hash.digest('hex'), files: files.length }
 }
 
