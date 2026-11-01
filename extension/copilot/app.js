@@ -4,6 +4,7 @@
 // user exactly which trading context is sent with the conversation.
 
 import { createMemory, memoryBlock } from './memory.js'
+import { escapeHtml, renderMarkdown } from './markdown.js'
 import { attachmentSummary, attachmentText, renderForMessage, validateFile } from './attachments.js'
 import {readState, writeState, findConversation, mostRecent } from './conversations.js'
 import { candlesMatchContext, contextBlock, createChartStore, describeContext } from '../lib/chartContext.js'
@@ -176,40 +177,6 @@ async function streamChat (payload, { onEvent, signal }) {
 /* ------------------------------------------------------------------ render */
 
 const $ = (id) => document.getElementById(id)
-
-function escapeHtml (text) {
-  return String(text)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-}
-
-// Small Markdown subset, escaped first: code fences, inline code, bold, links (http only), lists, paragraphs.
-function renderMarkdown (text) {
-  const blocks = []
-  let source = String(text ?? '').replace(/\r\n/g, '\n')
-  source = source.replace(/```(\w*)\n?([\s\S]*?)```/g, (_, language, code) => {
-    blocks.push(`<pre><code data-lang="${escapeHtml(language)}">${escapeHtml(code.replace(/\n$/, ''))}</code></pre>`)
-    return `\u0000${blocks.length - 1}\u0000`
-  })
-  let html = escapeHtml(source)
-  html = html
-    .replace(/`([^`\n]+)`/g, '<code>$1</code>')
-    .replace(/\*\*([^*\n]+)\*\*/g, '<b>$1</b>')
-    .replace(/(^|\s)\*([^*\n]+)\*/g, '$1<i>$2</i>')
-    .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noreferrer">$1</a>')
-  html = html
-    .split(/\n{2,}/)
-    .map((paragraph) => {
-      const lines = paragraph.split('\n')
-      if (lines.every((line) => /^\s*[-*]\s+/.test(line) || !line.trim()))
-        return `<ul>${lines.filter((line) => line.trim()).map((line) => `<li>${line.replace(/^\s*[-*]\s+/, '')}</li>`).join('')}</ul>`
-      return `<p>${lines.join('<br>')}</p>`
-    })
-    .join('')
-  return html.replace(/\u0000(\d+)\u0000/g, (_, index) => blocks[Number(index)])
-}
 
 function renderStatus (status, text) {
   const dot = $('statusDot')

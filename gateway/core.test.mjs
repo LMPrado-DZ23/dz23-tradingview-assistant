@@ -86,7 +86,10 @@ test('a message list is validated before it reaches a provider', () => {
   assert.throws(() => normalizeMessages([{ role: 'user', content: '   ' }]), (error) => error.code === ERROR.bad_request)
   assert.throws(() => normalizeMessages([{ role: 'user', content: 'x'.repeat(100_001) }]),
     (error) => error.code === ERROR.bad_request)
-  assert.deepEqual(normalizeMessages([{ role: 'tool', content: ' hi ' }]), [{ role: 'user', content: ' hi ' }])
+  // papel fora de system/user/assistant é RECUSADO, não coagido: coagir reescrevia a intenção do chamador
+  assert.throws(() => normalizeMessages([{ role: 'tool', content: ' hi ' }]),
+    (error) => error.code === ERROR.bad_request && /role must be one of/.test(error.message))
+  assert.deepEqual(normalizeMessages([{ role: 'user', content: ' hi ' }]), [{ role: 'user', content: ' hi ' }])
 })
 
 test('an OpenAI-compatible request carries the bearer key and the system message', () => {

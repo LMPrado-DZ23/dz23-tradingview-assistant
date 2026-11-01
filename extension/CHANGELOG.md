@@ -12,6 +12,13 @@ the whole file. Format and rendering rules: [_aitna/skills/changelog](../_aitna/
 - `npm run gateway:dev`: one command that reuses the token in `~/.dz23/gateway-token`, loads
   `~/.dz23/providers.env` when present and starts the gateway on 127.0.0.1:8777.
 - Candle provenance in the system prompt (`Fonte dos candles: BINANCE`), with the OHLCV summary the model reads.
+- A test file was silently outside the gate: `gateway/core.test.mjs` never ran — the gate listed three of the four
+  gateway files by hand, so "42 tests, all green" was true and meaningless while a fourth file had been failing since
+  the role-validation change. Hand-written file lists drift from disk; the gateway, dz23 and mcp steps now take globs
+  (`gateway/*.test.mjs`) and `npm run audit:test-files` fails when any of the **59** test files is not matched by a gate
+  pattern. Proven by restoring the old three-file list: three files reported FORA. The stale assertion itself was
+  corrected to the current contract instead of deleted.
+
 - Permissions are checked against usage (`npm run audit:permissions`, in the gate): §10 forbids asking for generic
   permissions you do not need, and a store reviewer agrees. Seven permissions and two host origins must each show evidence
   in the code — or an explicit justification when they are implicit by nature (`unlimitedStorage` lifts the storage quota;

@@ -1,0 +1,69 @@
+name: verify
+
+# O gate deste produto, rodando em CI. É o mesmo `npm run verify` que roda localmente — o que muda é só o runner.
+# Não há passo de build: extensão MV3 em JS puro não compila. O que existe é verificação.
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      # os testes sem browser não precisam do Chrome for Testing; baixar 150 MB em todo push é desperdício
+      PUPPETEER_SKIP_DOWNLOAD: "true"
+      # o gateway e os testes usam caminhos relativos à raiz do repositório
+      DZ23_CI: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # `audit:numbers` confere se a evidência do aceite descreve o código atual: precisa do histórico
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: dependências
+        run: npm ci
+
+      # ---- verificações de produto (as mesmas do gate local) ----
+      - name: lint
+        run: npm run lint
+      - name: localização (catálogo e superfícies)
+        run: npm run i18n:check
+      - name: coerência da documentação
+        run: npm run docs:check
+      - name: nenhum segredo versionado
+        run: npm run audit:secrets
+      - name: permissões do manifest conferidas contra o uso
+        run: npm run audit:permissions
+      - name: números do relatório conferidos contra o artefato
+        run: npm run audit:numbers
+      - name: exportações mortas
+        run: npm run audit:exports
+      - name: arquivos órfãos
+        run: npm run audit:orphans
+      - name: controles inertes
+        run: npm run audit:controls
+
+      # ---- suítes ----
+      - name: gateway
+        run: npm run test:gateway
+      - name: quant (métricas e estatística)
+        run: npm run test:quant
+      - name: dz23 (ingest/serve)
+        run: npm run test:dz23
+      - name: mcp
+        run: npm run test:mcp
+      - name: bridge
+        run: npm run test:bridge
+      - name: extensão e ferramentas
+        run: npm run test:ext
+      - name: ferramentas de auditoria
+        run: npm run test:tools
+
+      - name: sonda de contrato da API
+        run: npm run probe:api
