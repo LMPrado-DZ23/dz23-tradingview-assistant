@@ -49,6 +49,8 @@ jobs:
         run: npm run audit:test-files
       - name: números do relatório conferidos contra o artefato
         run: npm run audit:numbers
+      - name: README confere com o gate e com a evidência
+        run: npm run audit:readme
       - name: exportações mortas
         run: npm run audit:exports
       - name: arquivos órfãos
