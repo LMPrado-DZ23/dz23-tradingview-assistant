@@ -8,7 +8,7 @@ import { createHash } from 'node:crypto'
 import { readdirSync, readFileSync, statSync } from 'node:fs'
 import { execFileSync } from 'node:child_process'
 import { writeFileSync } from 'node:fs'
-import { dirname, join } from 'node:path'
+import { dirname, join, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..')
@@ -29,7 +29,8 @@ function sourceHash () {
   }
   walk(join(ROOT, 'extension'))
   for (const file of files.sort())
-    hash.update(file.slice(ROOT.length)).update(readFileSync(file, 'utf8').replace(/\r\n/g, '\n'))
+    // caminho com separador normalizado + conteudo com linha normalizada: o hash descreve o codigo, nao o sistema de arquivos
+    hash.update(relative(ROOT, file).replace(/\\/g, '/')).update(readFileSync(file, 'utf8').replace(/\r\n/g, '\n'))
   return { hash: hash.digest('hex'), files: files.length }
 }
 
