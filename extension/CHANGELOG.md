@@ -27,6 +27,12 @@ the whole file. Format and rendering rules: [_aitna/skills/changelog](../_aitna/
   Two of my own audits of this were wrong first — shell globs returned false negatives for `scripting` and
   `nativeMessaging`, which *are* used.
 
+- Same way out on the other dead ends: the fix covered one dialog; `checkAndOpenStrategy` had two more that also stopped
+  at "cannot open the strategy parameters". The action now lives in one place — `ui.researchAction()` returns the label
+  and the message — and all three call sites use it. `showErrorPopup` accepts an action too. Two tests cover the shared
+  action (label present, message `dz23:research:open` sent) and the error popup gaining the button, so the three call
+  sites cannot drift apart.
+
 - The dead end now offers a way out: the legacy dialog said "no strategy on the chart" and stopped there. It now carries
   an **"Open DZ23 Research"** button that opens the local lab, which backtests on the chart candles and needs no
   TradingView panel. `alertPopup` gained an optional action (button + callback); the background answers

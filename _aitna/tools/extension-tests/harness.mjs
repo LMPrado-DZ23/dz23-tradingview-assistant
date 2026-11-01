@@ -166,6 +166,9 @@ export function loadExtension (files, options = {}) {
         getURL: (path) => `chrome-extension://fake/${path}`,
         getManifest: () => ({ version: '2.15.0', name: 'test' }),
         onMessage: { addListener: () => {} },
+        // os content scripts pedem coisas ao background (abrir o Research, parear o gateway); sem isto a ação do
+        // diálogo não teria como ser testada
+        sendMessage: (message) => { if (message) pageMessages.push({ toBackground: message }) },
         // background.js registra o comportamento do painel no onInstalled; sem isto qualquer teste que carregue o
         // background morre em "cannot read properties of undefined"
         onInstalled: { addListener: () => {}, removeListener: () => {} },

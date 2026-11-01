@@ -445,10 +445,7 @@ tv.openStrategyParameters = async (indicatorTitle, searchAgainstStrategies = fal
     // Quando o painel falta, o diálogo oferece o laboratório local do DZ23: ele testa sobre os candles e não depende
     // do TradingView. Explicar o beco sem saída sem oferecer saída é o que fazia esta tela parecer defeito.
     if (!page.$(SEL.strategyTesterTab))
-      await ui.showIssuePopup(i18n.t('tv_no_strategy_on_chart'), {
-        label: i18n.t('ui_button_open_research'),
-        run: () => chrome.runtime.sendMessage({ type: 'dz23:research:open' }),
-      })
+      await ui.showIssuePopup(i18n.t('tv_no_strategy_on_chart'), ui.researchAction())
     else
       await ui.showIssuePopup(i18n.t('tv_no_settings_button'))
     return null
@@ -488,7 +485,7 @@ tv.checkAndOpenStrategy = async (name, isDeepTest = false) => {
     const isOpened = await tv.openStrategyParameters(name)
     if (!isOpened) {
       log.warn(`Cannot open the parameters of strategy "${name || ''}"`)
-      await ui.showErrorPopup(i18n.t('tv_cannot_open_params', [name || '', reloadAdviceText]))
+      await ui.showErrorPopup(i18n.t('tv_cannot_open_params', [name || '', reloadAdviceText]), ui.researchAction())
       return null
     }
     if (name) {
@@ -497,7 +494,7 @@ tv.checkAndOpenStrategy = async (name, isDeepTest = false) => {
         const openedTitle = indicatorTitleEl?.innerText
         await ui.showErrorPopup(openedTitle
           ? i18n.t('tv_params_not_opened_other', [name, openedTitle, reloadAdviceText])
-          : i18n.t('tv_params_not_opened', [name, reloadAdviceText]))
+          : i18n.t('tv_params_not_opened', [name, reloadAdviceText]), ui.researchAction())
         return null
       }
     }

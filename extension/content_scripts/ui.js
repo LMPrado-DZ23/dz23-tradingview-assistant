@@ -209,9 +209,16 @@ ui.showPopup = async (msgText) => {
   return await ui.alertPopup(msgText, null)
 }
 
-ui.showErrorPopup = async (msgText) => {
-  return await ui.alertPopup(msgText, true)
+ui.showErrorPopup = async (msgText, action = null) => {
+  return await ui.alertPopup(msgText, true, false, action)
 }
+
+// Ação reutilizável: abre o DZ23 Research. Existe para que "não deu para usar o painel do TradingView" tenha saída em
+// TODO diálogo que hoje só informa — e para o rótulo e o tipo da mensagem viverem em um só lugar.
+ui.researchAction = () => ({
+  label: i18n.t('ui_button_open_research'),
+  run: () => chrome.runtime.sendMessage({ type: 'dz23:research:open' }),
+})
 
 ui.showWarningPopup = async (msgText) => {
   return await ui.alertPopup(msgText, false)

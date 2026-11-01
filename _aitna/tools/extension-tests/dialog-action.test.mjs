@@ -71,3 +71,25 @@ test('ação que lança não deixa o diálogo travado', async () => {
   const erros = extension.logs.filter((entry) => entry.level === 'error')
   assert.equal(erros.length >= 1, true, 'a falha da ação precisa ser registrada, não engolida')
 })
+
+// A ação vive num só lugar (ui.researchAction): rótulo + mensagem. Se ela quebrar, todo diálogo que a usa quebra junto —
+// por isso o teste dela é direto, e não através de cada um dos três chamadores.
+test('researchAction devolve rótulo traduzido e pede a abertura do Research', () => {
+  const extension = loadExtension(FILES)
+  const { ui } = extension.api('ui')
+  const action = ui.researchAction()
+  assert.equal(typeof action.label, 'string')
+  assert.ok(action.label.length > 0, 'o botão precisa de rótulo')
+  action.run()
+  const pedido = extension.pageMessages.find((message) => message.toBackground)
+  assert.equal(pedido?.toBackground.type, 'dz23:research:open', 'a ação precisa pedir a abertura ao background')
+})
+
+test('showErrorPopup também aceita ação, não só o popup de issue', async () => {
+  const extension = loadExtension(FILES)
+  instrumentar(extension)
+  const { ui } = extension.api('ui')
+  void ui.showErrorPopup('falhou ao abrir parâmetros', ui.researchAction())
+  const html = extension.evaluate('globalThis.__captured.innerHTML')
+  assert.match(html, /id="iondvPopupActionBtn"/, 'erro com saída precisa mostrar o botão')
+})
