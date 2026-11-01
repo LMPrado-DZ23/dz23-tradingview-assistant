@@ -6,9 +6,10 @@ import { createServer } from 'node:http'
 import { mkdirSync, mkdtempSync, readFileSync, rmSync } from 'node:fs'
 import { join } from 'node:path'
 import { tmpdir } from 'node:os'
+import { chromePath } from './chrome.mjs'
 
 const ROOT = 'C:/Users/lmpra/Documents/tradingview-assistant-chrome-extension-main'
-const CHROME = `${ROOT}/_aitna/.browser/chrome/win64-155.0.8059.39/chrome-win64/chrome.exe`
+const CHROME = chromePath()
 const BRIDGE = readFileSync(`${ROOT}/extension/content_scripts/chartBridge.js`, 'utf8')
 
 const work = mkdtempSync(join(tmpdir(), 'dz23-bridge-'))

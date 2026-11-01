@@ -5,9 +5,10 @@ import { createServer } from 'node:http'
 import { mkdtempSync, readFileSync, rmSync } from 'node:fs'
 import { extname, join } from 'node:path'
 import { tmpdir } from 'node:os'
+import { chromePath } from './chrome.mjs'
 
 const ROOT = 'C:/Users/lmpra/Documents/tradingview-assistant-chrome-extension-main/extension'
-const CHROME = 'C:/Users/lmpra/Documents/tradingview-assistant-chrome-extension-main/_aitna/.browser/chrome/win64-155.0.8059.39/chrome-win64/chrome.exe'
+const CHROME = chromePath()
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.css': 'text/css', '.json': 'application/json' }
 
 const steps = []

@@ -10,10 +10,11 @@ import { createServer } from 'node:http'
 import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { extname, join } from 'node:path'
 import { tmpdir } from 'node:os'
+import { chromePath } from './chrome.mjs'
 
 const ROOT = 'C:/Users/lmpra/Documents/tradingview-assistant-chrome-extension-main'
 const EXT = process.env.DZ23_E2E_ROOT ?? `${ROOT}/extension`
-const CHROME = `${ROOT}/_aitna/.browser/chrome/win64-155.0.8059.39/chrome-win64/chrome.exe`
+const CHROME = chromePath()
 const TOKEN = 'e2e-token-123'
 const PORT = 8899
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.css': 'text/css', '.json': 'application/json' }

@@ -4,9 +4,10 @@ import { createServer } from 'node:http'
 import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { extname, join } from 'node:path'
 import { tmpdir } from 'node:os'
+import { chromePath } from './chrome.mjs'
 
 const ROOT = 'C:/Users/lmpra/Documents/tradingview-assistant-chrome-extension-main/extension'
-const CHROME = 'C:/Users/lmpra/Documents/tradingview-assistant-chrome-extension-main/_aitna/.browser/chrome/win64-155.0.8059.39/chrome-win64/chrome.exe'
+const CHROME = chromePath()
 const REPO_OUT = 'C:/Users/lmpra/Documents/tradingview-assistant-chrome-extension-main/docs/screenshots'
 // Escrever em docs/ durante a verificação suja a árvore a cada rodada. Só grava ali com DZ23_WRITE_SCREENSHOTS=1.
 const OUT = process.env.DZ23_WRITE_SCREENSHOTS === '1' ? REPO_OUT : join(tmpdir(), 'dz23-evidence')

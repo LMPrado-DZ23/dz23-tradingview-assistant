@@ -29,6 +29,16 @@ jobs:
       - name: dependências
         run: npm ci
 
+      # Os testes de ponte e de painel abrem um Chrome de verdade. Sem ele aqui, os E2E falhariam por ambiente, não por
+      # código — e "falhou por falta de navegador" é exatamente o tipo de vermelho que não informa nada.
+      - name: Chrome for Testing
+        run: npx puppeteer browsers install chrome
+      - name: apontar o Chrome para os testes
+        run: |
+          CHROME_BIN=$(node -e "import('./_aitna/tools/e2e/chrome.mjs').then(m => console.log(m.chromePath()))")
+          echo "DZ23_CHROME=$CHROME_BIN" >> "$GITHUB_ENV"
+          echo "usando $CHROME_BIN"
+
       # `audit:numbers` confere os números do relatório contra o pacote de verdade; num clone limpo ele não existe
       - name: pacote de distribuição
         run: npm run release:pack
