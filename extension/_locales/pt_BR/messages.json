@@ -3,7 +3,7 @@
     "message": "DZ23 · Assistente do TradingView"
   },
   "ext_description": {
-    "message": "Assistente para backtest de estratégias e exibição de sinais externos no TradingView"
+    "message": "DZ23 TradingView: copiloto de IA com análise em candles reais, estratégias, alertas e backtest local."
   },
   "popup_whats_new_open": {
     "message": "Atualizado para {0} — veja as novidades ›"

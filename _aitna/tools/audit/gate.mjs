@@ -38,6 +38,7 @@ const GATES = [
   { name: 'settings-ui', argv: ['node', `${TOOLS}/e2e/settings-page.mjs`], markers: ['"passed":true'] },
   { name: 'e2e', argv: ['node', `${TOOLS}/e2e/copilot-e2e.mjs`], markers: ['"passed": true'] },
   { name: 'audit', shell: 'npm audit --audit-level=high', markers: ['vulnerabilities'] },
+  { name: 'identity', argv: ['node', `${TOOLS}/audit/identity.mjs`], markers: ['"passed":true'] },
   { name: 'readme', argv: ['node', `${TOOLS}/audit/readme.mjs`], markers: ['"passed":true'] },
   { name: 'numbers', argv: ['node', `${TOOLS}/audit/numbers.mjs`], markers: ['"passed":true'] },
   { name: 'test-files', argv: ['node', `${TOOLS}/audit/test-coverage.mjs`], markers: ['"passed":true'] },

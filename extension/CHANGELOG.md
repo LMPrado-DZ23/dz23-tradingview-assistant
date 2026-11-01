@@ -27,6 +27,13 @@ the whole file. Format and rendering rules: [_aitna/skills/changelog](../_aitna/
   Two of my own audits of this were wrong first — shell globs returned false negatives for `scripting` and
   `nativeMessaging`, which *are* used.
 
+- The package introduced itself as another project: `package.json` still carried the upstream name and description, with no
+  repository, homepage or bugs link, and the extension description the user actually sees (both locales) only mentioned
+  backtesting — as if the copilot, market intelligence and local lab did not exist. Fixed: package renamed to
+  `dz23-tradingview-assistant`, description names the copilot, links point here, and the store-facing description fits
+  Chrome's 132 characters and says what the product does. `npm run audit:identity` (in the gate and the CI) fails if any of
+  that regresses — tested by restoring the old metadata: four findings.
+
 - The front page described someone else's product: the README was the upstream one — it told visitors to install from the
   Chrome Web Store (which publishes the **original** extension, not this build), pointed issues at another person's repo,
   and carried `©akumidv` in an example. Replaced by a README that describes this product, keeps the upstream text in
