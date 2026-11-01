@@ -42,15 +42,20 @@ function walk (directory, out = []) {
 
 const sha = (path) => createHash('sha256').update(readFileSync(path)).digest('hex')
 
-const backups = listBackups()
-if (!backups.length) {
+// `--backup=` aponta um backup específico e não depende de existir nada na pasta padrão. A ordem importa: antes isto
+// listava primeiro e saía com "nenhum backup" quando a pasta estava vazia — o argumento nunca era lido (numa máquina sem
+// backups, o ensaio de rollback nem podia ser apontado para um fixture).
+const overrideArg = process.argv.find((arg) => arg.startsWith('--backup='))
+const override = overrideArg ? overrideArg.slice('--backup='.length) : null
+
+const backups = override ? [] : listBackups()
+if (!override && !backups.length) {
   console.log(`FAIL nenhum backup em ${BACKUP_ROOT}`)
   process.exit(1)
 }
-notes.push(`backups encontrados: ${backups.length}`)
+if (!override)
+  notes.push(`backups encontrados: ${backups.length}`)
 
-const overrideArg = process.argv.find((arg) => arg.startsWith('--backup='))
-const override = overrideArg ? overrideArg.slice('--backup='.length) : null
 const target = override
   ? { name: basename(override), path: override }
   : backups[0]
