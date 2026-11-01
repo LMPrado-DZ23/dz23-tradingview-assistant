@@ -27,6 +27,14 @@ the whole file. Format and rendering rules: [_aitna/skills/changelog](../_aitna/
   Two of my own audits of this were wrong first — shell globs returned false negatives for `scripting` and
   `nativeMessaging`, which *are* used.
 
+- The front page described someone else's product: the README was the upstream one — it told visitors to install from the
+  Chrome Web Store (which publishes the **original** extension, not this build), pointed issues at another person's repo,
+  and carried `©akumidv` in an example. Replaced by a README that describes this product, keeps the upstream text in
+  `docs/UPSTREAM-README.md`, and adds `docs/NOTICE.md` with the attribution, the GPL-3.0 note and the list of
+  modifications — a derived work must credit the origin, not erase it. `npm run audit:readme` (in the gate) now compares
+  the README numbers with the gate and the acceptance evidence, and fails if the Store link returns, if the attribution
+  disappears or if the license stops being declared.
+
 - Each dead end got the exit it deserves, not the same one: a transient failure (panel did not render, Plotly did not load)
   is fixed by **retrying**, while a missing TradingView feature is bypassed by the **local lab**. `ui.retryAction(run)` now
   powers the four transient dialogs and `ui.researchAction()` the four that need the other tool; the messages were
