@@ -86,6 +86,16 @@ chrome.runtime.onMessage.addListener((message, sender, respond) => {
     })
     return true
   }
+  // O diálogo legado avisa "sem estratégia no gráfico". Em vez de só explicar o beco sem saída, ele oferece o
+  // laboratório local do DZ23, que testa sobre os candles e não depende do painel do TradingView.
+  if (message?.type === 'dz23:research:open') {
+    chrome.tabs.create({ url: chrome.runtime.getURL('research/index.html') }, (tab) => {
+      if (chrome.runtime.lastError)
+        return respond({ ok: false, reason: chrome.runtime.lastError.message })
+      respond({ ok: true, tabId: tab?.id ?? null })
+    })
+    return true
+  }
   if (message?.type === 'dz23:gateway:token') {
   callNativeHost('token')
   return true

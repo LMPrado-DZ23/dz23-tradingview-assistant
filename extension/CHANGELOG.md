@@ -27,6 +27,14 @@ the whole file. Format and rendering rules: [_aitna/skills/changelog](../_aitna/
   Two of my own audits of this were wrong first — shell globs returned false negatives for `scripting` and
   `nativeMessaging`, which *are* used.
 
+- The dead end now offers a way out: the legacy dialog said "no strategy on the chart" and stopped there. It now carries
+  an **"Open DZ23 Research"** button that opens the local lab, which backtests on the chart candles and needs no
+  TradingView panel. `alertPopup` gained an optional action (button + callback); the background answers
+  `dz23:research:open`. Four tests drive the dialog in the extension context (button only with an action, right label,
+  click runs and closes, a throwing action does not freeze the dialog) and two cover the message, including that an
+  unrelated type opens nothing. The test harness was missing `chrome.runtime.onInstalled` and `sidePanel`, so no test
+  could load the service worker before — that gap is closed too.
+
 - Replay of a running requestId is refused: two requests with the same id coexisted in the registry, so `POST /cancel`
   aborted only the second — the first kept streaming and had **no way to be cancelled**. §3.5 asks for replay
   protection; the duplicate is now a 400 "already running" that says why, and a test proves the duplicate is rejected

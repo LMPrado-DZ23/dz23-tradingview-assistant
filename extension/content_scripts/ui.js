@@ -135,7 +135,7 @@ top:0px;
 left:0px;
 z-index:10000;`
 
-ui.alertPopup =  async (msgText, isError = null, isConfirm = false) => {
+ui.alertPopup =  async (msgText, isError = null, isConfirm = false, action = null) => {
   return new Promise(resolve => {
     function removeAlertPopup () {
       const iondvAlertPopupEl = document.getElementById('iondvAlertPopup')
@@ -177,6 +177,7 @@ ui.alertPopup =  async (msgText, isError = null, isConfirm = false) => {
       <div class="iondvpopup-body">
         <p>${msgText}</p>
         <button class="iondvpopup-button" id="iondvPopupCloseBtn">${i18n.t('ui_button_ok')}</button>
+        ${action ? `<button class="iondvpopup-button" id="iondvPopupActionBtn">${action.label}</button>` : ''}
         ${isConfirm ? `<button class="iondvpopup-button" id="iondvPopupCancelBtn">${i18n.t('ui_button_cancel')}</button>` : ''}
       </div>
     </div>
@@ -185,6 +186,17 @@ ui.alertPopup =  async (msgText, isError = null, isConfirm = false) => {
     if (btnOk) {
       btnOk.focus()
       btnOk.onclick = removeAlertPopup
+    }
+    const btnAction = document.getElementById('iondvPopupActionBtn')
+    if (btnAction && action) {
+      btnAction.onclick = () => {
+        removeAlertPopup()
+        try {
+          action.run()
+        } catch (error) {
+          log.error('ação do diálogo falhou:', error)
+        }
+      }
     }
     const btnCancel = document.getElementById('iondvPopupCancelBtn')
     if (btnCancel) {
@@ -211,8 +223,8 @@ ui.issueHelpText = () => {
   return i18n.t('ui_issue_help', [version])
 }
 
-ui.showIssuePopup = async (msgText) => {
-  return await ui.alertPopup(`${msgText}\n\n${ui.issueHelpText()}`, true)
+ui.showIssuePopup = async (msgText, action = null) => {
+  return await ui.alertPopup(`${msgText}\n\n${ui.issueHelpText()}`, true, false, action)
 }
 
 // Shows a caught error by kind: user-resolvable errors as is, everything else with the issue instructions

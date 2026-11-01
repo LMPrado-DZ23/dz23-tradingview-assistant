@@ -528,7 +528,7 @@
     "message": "A janela de configurações da estratégia não tem a aba \"Inputs\": ou a estratégia não tem parâmetros de entrada para otimizar, ou o TradingView mudou a interface."
   },
   "tv_no_strategy_on_chart": {
-    "message": "Nenhuma estratégia foi encontrada neste gráfico — o painel \"Strategy Tester\" do TradingView só aparece quando há uma.\n\nPara adicionar no TradingView: abra \"Indicadores\", vá à aba \"Estratégias\" e escolha um modelo (por exemplo \"MACD Strategy\"). O painel aparece na aba inferior do gráfico.\n\nAlternativa sem o painel do TradingView: no popup do DZ23, botão \"Abrir pesquisa\" — é o DZ23 Research, que testa a estratégia sobre os candles do gráfico."
+    "message": "Nenhuma estratégia foi encontrada neste gráfico — o painel \"Strategy Tester\" do TradingView só aparece quando há uma.\n\nPara adicionar no TradingView: abra \"Indicadores\", vá à aba \"Estratégias\" e escolha um modelo (por exemplo \"MACD Strategy\"). O painel aparece na aba inferior do gráfico.\n\nAlternativa sem o painel do TradingView: o botão abaixo abre o DZ23 Research, que testa sobre os candles do gráfico."
   },
   "tv_no_settings_button": {
     "message": "Não é possível encontrar o botão de configurações da estratégia no painel \"Strategy Tester\". O teste foi interrompido."
@@ -586,5 +586,8 @@
   },
   "tvchart_timeframe_not_in_menu": {
     "message": "O timeframe \"{0}\" não está no menu de timeframes do gráfico. Adicione-o ao menu manualmente e tente novamente."
+  },
+  "ui_button_open_research": {
+    "message": "Abrir DZ23 Research"
   }
 }

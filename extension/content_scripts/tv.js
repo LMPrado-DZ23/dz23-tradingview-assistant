@@ -441,9 +441,14 @@ tv.openStrategyParameters = async (indicatorTitle, searchAgainstStrategies = fal
 
   if (!isOpened) {
     // TV renders the "Strategy Tester" tab only while a strategy is on the chart, so its absence most likely
-    // means no strategy - but the same symptom appears when TV changes its UI, so the issue block is shown too
+    // means no strategy - but the same symptom appears when TV changes its UI, so the issue block is shown too.
+    // Quando o painel falta, o diálogo oferece o laboratório local do DZ23: ele testa sobre os candles e não depende
+    // do TradingView. Explicar o beco sem saída sem oferecer saída é o que fazia esta tela parecer defeito.
     if (!page.$(SEL.strategyTesterTab))
-      await ui.showIssuePopup(i18n.t('tv_no_strategy_on_chart'))
+      await ui.showIssuePopup(i18n.t('tv_no_strategy_on_chart'), {
+        label: i18n.t('ui_button_open_research'),
+        run: () => chrome.runtime.sendMessage({ type: 'dz23:research:open' }),
+      })
     else
       await ui.showIssuePopup(i18n.t('tv_no_settings_button'))
     return null

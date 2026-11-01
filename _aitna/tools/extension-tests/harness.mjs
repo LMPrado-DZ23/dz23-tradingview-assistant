@@ -166,7 +166,12 @@ export function loadExtension (files, options = {}) {
         getURL: (path) => `chrome-extension://fake/${path}`,
         getManifest: () => ({ version: '2.15.0', name: 'test' }),
         onMessage: { addListener: () => {} },
+        // background.js registra o comportamento do painel no onInstalled; sem isto qualquer teste que carregue o
+        // background morre em "cannot read properties of undefined"
+        onInstalled: { addListener: () => {}, removeListener: () => {} },
       },
+      // o service worker usa sidePanel só no onInstalled e dentro de try/catch
+      sidePanel: { setPanelBehavior: () => Promise.resolve(), open: () => Promise.resolve() },
       storage: { local: storageArea, sync: fakeStorageArea() },
       tabs: { query: (query, callback) => callback([{ url: `${PAGE_ORIGIN}/chart/abc/` }]), sendMessage: () => {} },
     },

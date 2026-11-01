@@ -528,7 +528,7 @@
     "message": "The strategy settings dialog has no \"Inputs\" tab: either the strategy has no input parameters to optimize, or TradingView changed its UI."
   },
   "tv_no_strategy_on_chart": {
-    "message": "No strategy was found on this chart — TradingView only shows the \"Strategy Tester\" panel when there is one.\n\nTo add one in TradingView: open \"Indicators\", go to the \"Strategies\" tab and pick a template (for example \"MACD Strategy\"). The panel appears in the bottom tab of the chart.\n\nAlternative without TradingView's panel: in the DZ23 popup, the \"Open research\" button — that is DZ23 Research, which backtests on the chart candles."
+    "message": "No strategy was found on this chart — TradingView only shows the \"Strategy Tester\" panel when there is one.\n\nTo add one in TradingView: open \"Indicators\", go to the \"Strategies\" tab and pick a template (for example \"MACD Strategy\"). The panel appears in the bottom tab of the chart.\n\nThe alternative that does not need TradingView's panel: the button below opens DZ23 Research, which backtests on the chart candles."
   },
   "tv_no_settings_button": {
     "message": "Cannot find the strategy settings button on the \"Strategy Tester\" panel. The test is stopped."
@@ -586,5 +586,8 @@
   },
   "tvchart_timeframe_not_in_menu": {
     "message": "The timeframe \"{0}\" is not in the chart timeframe menu. Add it to the menu manually and try again."
+  },
+  "ui_button_open_research": {
+    "message": "Open DZ23 Research"
   }
 }
