@@ -447,25 +447,25 @@ tv.openStrategyParameters = async (indicatorTitle, searchAgainstStrategies = fal
     if (!page.$(SEL.strategyTesterTab))
       await ui.showIssuePopup(i18n.t('tv_no_strategy_on_chart'), ui.researchAction())
     else
-      await ui.showIssuePopup(i18n.t('tv_no_settings_button'))
+      await ui.showIssuePopup(i18n.t('tv_no_settings_button'), ui.retryAction(() => tv.openStrategyParameters(indicatorTitle, searchAgainstStrategies)))
     return null
   }
   const stratIndicatorEl = await page.waitForSelector(SEL.indicatorTitle, 5000)
   if (!stratIndicatorEl) {
-    await ui.showIssuePopup(i18n.t('tv_dialog_not_opened'))
+    await ui.showIssuePopup(i18n.t('tv_dialog_not_opened'), ui.retryAction(() => tv.openStrategyParameters(indicatorTitle, searchAgainstStrategies)))
     return null
   }
   const inputsTabMissingText = i18n.t('tv_inputs_tab_missing')
   const tabInputEl = document.querySelector(SEL.tabInput)
   if (!tabInputEl) {
-    await ui.showIssuePopup(inputsTabMissingText)
+    await ui.showIssuePopup(inputsTabMissingText, ui.retryAction(() => tv.openStrategyParameters(indicatorTitle, searchAgainstStrategies)))
     return null
   }
   page.mouseClick(tabInputEl)
 
   const tabInputActiveEl = await page.waitForSelector(SEL.tabInputActive)
   if (!tabInputActiveEl) {
-    await ui.showIssuePopup(inputsTabMissingText)
+    await ui.showIssuePopup(inputsTabMissingText, ui.retryAction(() => tv.openStrategyParameters(indicatorTitle, searchAgainstStrategies)))
     return null
   }
   return true

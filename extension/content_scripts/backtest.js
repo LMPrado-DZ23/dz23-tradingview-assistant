@@ -232,7 +232,7 @@ async function getInitBestValues(testResults) {
       if (resData['comment'])
         await ui.showWarningPopup(i18n.t('backtest_no_report_data_comment', [testResults.optParamName, resData['comment']]))
       else
-        await ui.showIssuePopup(i18n.t('backtest_no_report_data_no_table', [testResults.optParamName]))
+        await ui.showIssuePopup(i18n.t('backtest_no_report_data_no_table', [testResults.optParamName]), ui.researchAction())
     }
     return null
   }

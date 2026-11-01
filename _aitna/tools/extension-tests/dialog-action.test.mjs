@@ -5,6 +5,8 @@
 // EXISTIR quando há ação, NÃO existir quando não há, e o clique precisa chamar a ação e fechar o diálogo.
 import assert from 'node:assert/strict'
 import test from 'node:test'
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
 import { loadExtension } from './harness.mjs'
 
 const FILES = ['content_scripts/selector.js', 'content_scripts/page.js', 'content_scripts/ui.js']
@@ -92,4 +94,25 @@ test('showErrorPopup também aceita ação, não só o popup de issue', async ()
   void ui.showErrorPopup('falhou ao abrir parâmetros', ui.researchAction())
   const html = extension.evaluate('globalThis.__captured.innerHTML')
   assert.match(html, /id="iondvPopupActionBtn"/, 'erro com saída precisa mostrar o botão')
+})
+
+test('retryAction devolve rótulo traduzido e chama a função recebida', () => {
+  // Nem todo beco tem a mesma saída: quando a falha é transitória, a saída é repetir — e o rótulo vem do catálogo.
+  const extension = loadExtension(FILES)
+  const { ui } = extension.api('ui')
+  let chamou = 0
+  const action = ui.retryAction(() => { chamou += 1 })
+  assert.ok(action.label.length > 0, 'precisa de rótulo traduzido')
+  action.run()
+  assert.equal(chamou, 1)
+})
+
+test('docs/DIALOGOS.md só cita chaves de tradução que existem', () => {
+  // Documento que promete um diálogo inexistente envelhece igual ao texto que não corresponde à tela.
+  const doc = readFileSync(join(process.cwd(), 'docs/DIALOGOS.md'), 'utf8')
+  const catalog = JSON.parse(readFileSync(join(process.cwd(), 'extension/_locales/pt_BR/messages.json'), 'utf8'))
+  const chaves = [...new Set([...doc.matchAll(/`((?:tv|backtest|action)_[a-z_]+)`/g)].map((match) => match[1]))]
+  assert.ok(chaves.length >= 10, `a doc deveria citar os diálogos; citou ${chaves.length}`)
+  for (const key of chaves)
+    assert.ok(catalog[key], `DIALOGOS.md cita "${key}", que não existe no catálogo`)
 })

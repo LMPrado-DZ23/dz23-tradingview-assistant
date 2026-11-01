@@ -363,7 +363,7 @@
     "message": "Apagar todos os resultados e conjuntos de parâmetros armazenados? Isso não pode ser desfeito."
   },
   "action_plotly_unavailable": {
-    "message": "Não foi possível carregar a biblioteca do gráfico 3D, então o gráfico não está disponível. Verifique o console (F12) e recarregue a página."
+    "message": "Não foi possível carregar a biblioteca do gráfico 3D, então o gráfico não está disponível.\n\nUse \"Tentar novamente\" — a biblioteca é carregada na hora e uma segunda tentativa costuma resolver. Se insistir, abra o console (F12) e recarregue a página."
   },
   "action_no_data_in_storage": {
     "message": "Não havia dados no armazenamento"
@@ -480,7 +480,7 @@
     "message": "Sem dados de relatório para \"{0}\".\n\n{1}"
   },
   "backtest_no_report_data_no_table": {
-    "message": "Sem dados de relatório para \"{0}\".\n\nO TradingView não forneceu uma tabela de relatório que possa ser interpretada."
+    "message": "Sem dados de relatório para \"{0}\".\n\nO TradingView não forneceu uma tabela de relatório que possa ser interpretada. O botão abaixo abre o DZ23 Research, que testa sobre os candles do gráfico sem depender dessa tabela."
   },
   "backtest_param_not_found_report": {
     "message": "Parâmetro \"{0}\" não encontrado no relatório. Métricas disponíveis: {1}. Iteração ignorada."
@@ -589,5 +589,8 @@
   },
   "ui_button_open_research": {
     "message": "Abrir DZ23 Research"
+  },
+  "ui_button_retry": {
+    "message": "Tentar novamente"
   }
 }

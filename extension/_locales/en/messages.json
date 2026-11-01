@@ -363,7 +363,7 @@
     "message": "Delete every stored result and parameter set? This cannot be undone."
   },
   "action_plotly_unavailable": {
-    "message": "The 3D chart library could not be loaded, so the chart is not available. Check the console (F12) and reload the page."
+    "message": "The 3D chart library could not be loaded, so the chart is not available.\n\nUse \"Try again\" — the library is loaded on demand and a second attempt usually works. If it persists, open the console (F12) and reload the page."
   },
   "action_no_data_in_storage": {
     "message": "There was no data in the storage"
@@ -480,7 +480,7 @@
     "message": "No report data for \"{0}\".\n\n{1}"
   },
   "backtest_no_report_data_no_table": {
-    "message": "No report data for \"{0}\".\n\nTradingView did not provide a parseable report table."
+    "message": "No report data for \"{0}\".\n\nTradingView did not provide a report table that can be parsed. The button below opens DZ23 Research, which backtests on the chart candles without that table."
   },
   "backtest_param_not_found_report": {
     "message": "Parameter \"{0}\" not found in report. Available metrics: {1}. Iteration skipped."
@@ -589,5 +589,8 @@
   },
   "ui_button_open_research": {
     "message": "Open DZ23 Research"
+  },
+  "ui_button_retry": {
+    "message": "Try again"
   }
 }

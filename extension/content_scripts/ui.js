@@ -215,6 +215,9 @@ ui.showErrorPopup = async (msgText, action = null) => {
 
 // Ação reutilizável: abre o DZ23 Research. Existe para que "não deu para usar o painel do TradingView" tenha saída em
 // TODO diálogo que hoje só informa — e para o rótulo e o tipo da mensagem viverem em um só lugar.
+// Nem todo beco tem a mesma saída. Quando a falha é transitória (script não injetado, painel demorou), a saída é repetir.
+ui.retryAction = (run) => ({ label: i18n.t('ui_button_retry'), run })
+
 ui.researchAction = () => ({
   label: i18n.t('ui_button_open_research'),
   run: () => chrome.runtime.sendMessage({ type: 'dz23:research:open' }),

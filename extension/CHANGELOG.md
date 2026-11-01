@@ -27,6 +27,13 @@ the whole file. Format and rendering rules: [_aitna/skills/changelog](../_aitna/
   Two of my own audits of this were wrong first — shell globs returned false negatives for `scripting` and
   `nativeMessaging`, which *are* used.
 
+- Each dead end got the exit it deserves, not the same one: a transient failure (panel did not render, Plotly did not load)
+  is fixed by **retrying**, while a missing TradingView feature is bypassed by the **local lab**. `ui.retryAction(run)` now
+  powers the four transient dialogs and `ui.researchAction()` the four that need the other tool; the messages were
+  rewritten to name the button next to them. The four remaining dialogs have **no button on purpose** — the fix is outside
+  the extension (pick a strategy, change the ticker) — and `docs/DIALOGOS.md` records why, with a test that fails if the
+  doc ever cites a translation key that does not exist.
+
 - Same way out on the other dead ends: the fix covered one dialog; `checkAndOpenStrategy` had two more that also stopped
   at "cannot open the strategy parameters". The action now lives in one place — `ui.researchAction()` returns the label
   and the message — and all three call sites use it. `showErrorPopup` accepts an action too. Two tests cover the shared

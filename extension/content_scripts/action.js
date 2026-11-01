@@ -333,7 +333,7 @@ action.show3DChart = async () => {
   testResults.optParamName = testResults.optParamName || backtest.DEF_MAX_PARAM_NAME
   // The 3D chart is the only consumer of Plotly, which is loaded on first use
   if (!await tv.ensurePlotly()) {
-    await ui.showIssuePopup(i18n.t('action_plotly_unavailable'))
+    await ui.showIssuePopup(i18n.t('action_plotly_unavailable'), ui.retryAction(() => action.show3DChart()))
     return
   }
   const eventData = await sendActionMessage(testResults, 'show3DChart')
