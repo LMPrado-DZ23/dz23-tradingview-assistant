@@ -143,11 +143,15 @@ async function runChecks({ id, offline, dev = false }) {
   if (dev) {
     for (const check of checks) {
       if (check.name === 'key.present' || check.name === 'key.matches-store' || check.name === 'git.clean-extension') {
+        // `git.clean-extension` já rodou: preservar o que ela encontrou em vez de apagar. A versão anterior largava a
+        // mesma frase falsa em todos os casos — "the tree has no commit yet" num repositório com centenas de commits —
+        // e o `--dev` passava a impressão de ter verificado algo que nunca olhou.
+        const encontrado = typeof check.detail === 'string' ? ` — ${check.detail}` : ''
         check.ok = null;
         check.skipped = true;
         check.detail = check.name === 'git.clean-extension'
-          ? 'skipped: --dev (the tree has no commit yet; a release requires a committed extension)'
-          : 'skipped: --dev (the store key stays local; a release pack requires it)';
+          ? `skipped: --dev (um build de desenvolvimento pode empacotar árvore não commitada)${encontrado}`
+          : 'skipped: --dev (a chave da loja fica local; um pacote de release exige)';
       }
     }
     // `ok` was computed before the skips: recompute it after them

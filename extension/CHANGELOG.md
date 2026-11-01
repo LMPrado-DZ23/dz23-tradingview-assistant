@@ -27,6 +27,13 @@ the whole file. Format and rendering rules: [_aitna/skills/changelog](../_aitna/
   Two of my own audits of this were wrong first — shell globs returned false negatives for `scripting` and
   `nativeMessaging`, which *are* used.
 
+- A green with no evidence is now a failure: `npm run verify:battery` runs the fifteen §14 checks **one at a time**, records
+  each exit code (so the last command cannot hide the previous ones) and rejects a step that exits 0 without printing
+  proof — the dangerous case where a command runs, returns success and verified nothing. It immediately caught one:
+  `release:check --dev` skipped `git.clean-extension` with the false reason "the tree has no commit yet" in a repository
+  with hundreds of commits. The skip now carries the check's real finding (which files are uncommitted). Latest run:
+  15/15 green, including `test:e2e` and `test:a11y`, which the CI does not run. Evidence in `docs/BATERIA.json`.
+
 - The icon promised a buy signal: the toolbar artwork was the upstream one — candlesticks with a green "BUY" — so the
   first thing a user sees advertised trade recommendations in an assistant that explicitly does not give them, and at
   16 px the word was noise. It was also someone else's mark. Replaced by a single-stroke "Z" in the panel accent colour,

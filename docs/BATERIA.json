@@ -1,0 +1,128 @@
+{
+  "ok": true,
+  "emAndamento": true,
+  "quando": "2026-11-01T04:52:21.591Z",
+  "etapas": [
+    {
+      "etapa": "lint",
+      "code": 0,
+      "duracaoSegundos": 5.2,
+      "contrato": null,
+      "resumo": "114:7  warning  'problems' is assigned a value but never used  no-unused-vars | ✖ 11 problems (0 errors, 11 warnings)"
+    },
+    {
+      "etapa": "i18n:check",
+      "code": 0,
+      "duracaoSegundos": 0.4,
+      "contrato": null,
+      "resumo": "0 error(s), 0 warning(s)"
+    },
+    {
+      "etapa": "test:ext",
+      "code": 0,
+      "duracaoSegundos": 45.7,
+      "contrato": null,
+      "resumo": "ℹ tests 513 | ℹ pass 512 | ℹ fail 0"
+    },
+    {
+      "etapa": "test:gateway",
+      "code": 0,
+      "duracaoSegundos": 6,
+      "contrato": null,
+      "resumo": "ℹ tests 63 | ℹ pass 63 | ℹ fail 0"
+    },
+    {
+      "etapa": "test:quant",
+      "code": 0,
+      "duracaoSegundos": 0.5,
+      "contrato": null,
+      "resumo": "ℹ tests 43 | ℹ pass 43 | ℹ fail 0"
+    },
+    {
+      "etapa": "test:dz23",
+      "code": 0,
+      "duracaoSegundos": 0.6,
+      "contrato": null,
+      "resumo": "ℹ tests 9 | ℹ pass 9 | ℹ fail 0"
+    },
+    {
+      "etapa": "test:mcp",
+      "code": 0,
+      "duracaoSegundos": 0.8,
+      "contrato": null,
+      "resumo": "ℹ tests 12 | ℹ pass 12 | ℹ fail 0"
+    },
+    {
+      "etapa": "test:tools",
+      "code": 0,
+      "duracaoSegundos": 45.5,
+      "contrato": null,
+      "resumo": "ℹ tests 573 | ℹ pass 572 | ℹ fail 0"
+    },
+    {
+      "etapa": "test:bridge",
+      "code": 0,
+      "duracaoSegundos": 6.9,
+      "contrato": {
+        "passed": true,
+        "steps": 8
+      },
+      "resumo": "contrato: passed=true, steps=8"
+    },
+    {
+      "etapa": "test:e2e",
+      "code": 0,
+      "duracaoSegundos": 45.7,
+      "contrato": {
+        "passed": true,
+        "steps": null
+      },
+      "resumo": "\"ok\": true, | \"ok\": true, | \"ok\": true,"
+    },
+    {
+      "etapa": "test:a11y",
+      "code": 0,
+      "duracaoSegundos": 2.3,
+      "contrato": {
+        "passed": true,
+        "steps": 6
+      },
+      "resumo": "contrato: passed=true, steps=6"
+    },
+    {
+      "etapa": "perf:check",
+      "code": 0,
+      "duracaoSegundos": 0.4,
+      "contrato": {
+        "passed": true,
+        "steps": null
+      },
+      "resumo": "{\"passed\":true,\"problems\":0}"
+    },
+    {
+      "etapa": "audit",
+      "code": 0,
+      "duracaoSegundos": 0.8,
+      "contrato": null,
+      "resumo": "found 0 vulnerabilities"
+    },
+    {
+      "etapa": "release:check",
+      "code": 0,
+      "duracaoSegundos": 0.5,
+      "contrato": null,
+      "resumo": "\"ok\": null, | \"ok\": true, | \"ok\": null,"
+    },
+    {
+      "etapa": "verify",
+      "code": 0,
+      "duracaoSegundos": 239.4,
+      "contrato": {
+        "passed": true,
+        "steps": null
+      },
+      "resumo": "\"ok\": null, | {\"passed\":true,\"entries\":67,\"version\":\"2.17.0\",\"sha256\":\"6cd64a2a6014214d2f3a3aaeb03d207ffd52fe43a4d9f4c3865ab1d041b60174\",\"problems\":[]} | {\"passed\":true,\"notes\":6,\"problems\":[]}"
+    }
+  ],
+  "falhas": []
+}
