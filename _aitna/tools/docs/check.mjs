@@ -42,6 +42,10 @@ for (const doc of docs) {
       problems.push(`${relativeDoc}: comando "npm run ${script}" não existe no package.json`)
   }
 
+  // Artefatos gerados por build não ficam no Git; a citação é válida se houver script que os produza.
+  const ARTEFATOS_GERADOS = [/\.zip$/, /^dist\//, /\.sha256$/]
+  const declaredScripts = new Set(Object.keys(JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8')).scripts ?? {}))
+
   // arquivos citados em docs: `docs/ALGO.md`, `extension/lib/x.js`, `_aitna/tools/y.mjs`
   for (const match of text.matchAll(/`([A-Za-z0-9_./-]+\.(?:md|js|mjs|json|html|css|zip|cmd))`/g)) {
     const target = match[1]
@@ -50,8 +54,12 @@ for (const doc of docs) {
     filesChecked += 1
     const absolute = join(ROOT, target)
     const fromDocs = join(ROOT, 'docs', target)
-    if (!existsSync(absolute) && !existsSync(fromDocs))
-      problems.push(`${relativeDoc}: arquivo citado "${target}" não existe`)
+    if (!existsSync(absolute) && !existsSync(fromDocs)) {
+      const gerado = ARTEFATOS_GERADOS.some((pattern) => pattern.test(target))
+      const haScriptDeBuild = ['release:pack', 'verify'].some((name) => declaredScripts.has(name))
+      if (!(gerado && haScriptDeBuild))
+        problems.push(`${relativeDoc}: arquivo citado "${target}" não existe`)
+    }
   }
 }
 

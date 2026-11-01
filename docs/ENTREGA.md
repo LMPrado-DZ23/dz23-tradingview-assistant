@@ -5,7 +5,7 @@ comprovado, está escrito assim.
 
 ```
 repositório: C:\Users\lmpra\Documents\tradingview-assistant-chrome-extension-main
-pacote:      assistant-ext.zip · 66 arquivos · v2.17.0
+pacote:      assistant-ext.zip · 67 arquivos · v2.17.0
 SHA-256:     2c3f94962e974caee71e0e9b392a73353c97fe6ad313d5646a919ee0a8f553d6
 ```
 
@@ -71,7 +71,7 @@ declarado; **ausente** = não existe.
 | MCP oficial do TradingView | **bloqueado (dependência externa)** | OAuth 2.1 + PKCE + registro dinâmico implementados, 16 testes de contrato; o servidor recusa com **"É necessário um plano pago"** — `BLOCKED_BY_EXTERNAL_DEPENDENCY` documentado em `docs/MCP-TRADINGVIEW.md` |
 | Opções do popup numa fonte única | **comprovado** | o popup gravava `iondvOptions` direto e deixava o registro velho (a ponte podia espelhar o valor velho por cima da escolha nova); agora passa por um caminho único com fallback declarado — 2 testes estruturais |
 | Gate com prova de evidência | **comprovado** | `npm run audit:gate`: **31 verificações, 604 testes**; cada comando precisa mostrar que rodou (mínimo por suíte, marcador por script) — um glob vazio reprova em vez de passar |
-| Higiene do pacote | **comprovado** | `npm run audit:orphans`: 66 arquivos, 60 referências, **0 órfãos e 0 referências quebradas**; testes que viajavam dentro de `extension/quant/` saíram do pacote |
+| Higiene do pacote | **comprovado** | `npm run audit:orphans`: 67 arquivos, 60 referências, **0 órfãos e 0 referências quebradas**; testes que viajavam dentro de `extension/quant/` saíram do pacote |
 | Aceite com autoridade única | **comprovado** | `npm run accept` delega ao gate (nada de lista paralela de comandos) e mapeia 22 vereditos em 16 critérios do §17 — 16 PASS, 2 EXTERNAL, 2 ABSENT |
 | Ingestão de experimentos (pesquisa → agentes) | **comprovado** | serviço recebia `POST /experiments` e **nada enviava**; agora `npm run dz23:send` valida localmente, envia, lê de volta e compara hash do aceite com o gravado — 5 testes contra servidor real; ver [DZ23-INGEST.md](docs/DZ23-INGEST.md) |
 | Todo controle executa uma ação (§13) | **comprovado** | `npm run audit:controls`: **73 controles** nas 4 telas, **0 sem referência** no JavaScript; o auditor ignora comentários e reporta markup comentado (`deepTestStrategy`) como informação, não como botão |
@@ -135,7 +135,7 @@ Cada comando teve exit code capturado individualmente — nenhum "verde" herdado
 | `npm audit` | 0 | — | 0 vulnerabilidades | — | — |
 | `release:check --dev --offline` | 0 | — | pacote válido | — | — |
 | `npm run audit:gate` | 0 | 567 | 567 | 0 | 0 |
-| `npm run audit:orphans` | 0 | — | 66 arquivos · 60 referências · 0 órfãos | — | — |
+| `npm run audit:orphans` | 0 | — | 67 arquivos · 60 referências · 0 órfãos | — | — |
 | `npm run backup:check` | 0 | — | 177 arquivos restaurados · 51 scripts compilados | — | — |
 
 **Total:** 14 verificações, 0 falhas.
