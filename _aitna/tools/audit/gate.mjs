@@ -13,7 +13,7 @@ const TOOLS = '_aitna/tools'
 
 // minTests: o comando é um run de testes e precisa reportar ao menos isto. marker: texto obrigatório na saída.
 const GATES = [
-  { name: 'lint', shell: 'npx --yes eslint@10.13.0 .', markers: ['0 error'] },
+  { name: 'lint', argv: ['node', `${TOOLS}/audit/lint.mjs`], markers: ['"passed":true'] },
   { name: 'i18n', argv: ['node', `${TOOLS}/i18n/cli.mjs`, 'check'], markers: ['0 error'] },
   { name: 'docs', argv: ['node', `${TOOLS}/docs/check.mjs`], markers: ['"passed":true'] },
   { name: 'security', argv: ['node', `${TOOLS}/security/check.mjs`], markers: ['"passed":true'] },

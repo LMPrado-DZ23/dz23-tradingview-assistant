@@ -543,13 +543,15 @@ await evaluate(`(() => {
   return true
 })()`, sessionId)
 await wait(400)
-const memoryPersisted = await evaluate(`(() => {
+// Reabrir o diálogo é um efeito colateral necessário; o que se afirma é o valor lido logo abaixo. O resultado do clique
+// booleano ficava numa variável que ninguém lia — o teste passava por acidente se o clique não acontecesse.
+const reopened = await evaluate(`(() => {
   const memory = document.querySelector('#ctxMemory')
   if (!memory) return false
   document.querySelector('#chartChip')?.click()
   return true
 })()`, sessionId)
-await wait(400)
+step('o diálogo reabre antes de conferir a memória', reopened === true, JSON.stringify(reopened))
 const memoryValue = await evaluate(`document.querySelector('#ctxMemory')?.value ?? ''`, sessionId)
 step('memória persiste ao reabrir o diálogo', /só operar acima do VWAP/.test(memoryValue), JSON.stringify(memoryValue).slice(0, 80))
 

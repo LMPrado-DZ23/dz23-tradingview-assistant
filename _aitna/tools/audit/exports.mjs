@@ -111,7 +111,6 @@ for (const entry of nowhere)
 for (const entry of justified)
   console.log(`API PÚBLICA   ${entry.file.padEnd(34)} ${entry.name} — ${entry.why}`)
 
-const problems = onlyInTests.length + nowhere.length
 console.log(JSON.stringify({
   passed: true,
   exports: exports.length,

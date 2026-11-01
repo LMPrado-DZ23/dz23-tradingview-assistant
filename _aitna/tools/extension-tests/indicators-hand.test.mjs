@@ -4,8 +4,6 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import { atr, bollinger, ema, macd, rsi, sma, vwap } from '../../../extension/lib/marketIntel.js'
 
-const close = (values) => values
-
 test('SMA confere com a média à mão', () => {
   assert.equal(sma([1, 2, 3, 4, 5], 5), 3)
   assert.equal(sma([2, 4, 6, 8], 2), 7) // última janela: (6+8)/2

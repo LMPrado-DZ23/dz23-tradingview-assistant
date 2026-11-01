@@ -7,8 +7,8 @@
 //
 // It proves plumbing and streaming, **not answer quality**: a 8B model answering a market question is a demo, not an
 // analysis. When Ollama is absent the script says so and exits 0 — a skip must never look like a pass.
-import { execFileSync, spawn } from 'node:child_process'
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { spawn } from 'node:child_process'
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'

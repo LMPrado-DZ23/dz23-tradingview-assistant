@@ -27,6 +27,16 @@ the whole file. Format and rendering rules: [_aitna/skills/changelog](../_aitna/
   Two of my own audits of this were wrong first — shell globs returned false negatives for `scripting` and
   `nativeMessaging`, which *are* used.
 
+- The lint gate could not pass by passing: the gate looked for the string "0 error" in eslint's output, which only
+  appears when eslint prints its summary — i.e. when there is at least one problem. With a clean tree eslint prints
+  nothing, the marker vanished and the gate failed its own success. `npm run audit:lint` wraps eslint and always ends
+  with a JSON contract (`{passed, errors, warnings}`); the gate and the CI now read that. Verified in all three states:
+  clean, one warning (passes, reports 1), one error (fails). While cleaning the eleven warnings the CI had been showing,
+  three turned out to be more than style: a copilot E2E computed a "dialog reopened" boolean and discarded it (the step
+  now asserts it), the gateway fallback fixture accumulated the request body and never read it (the fake upstream now
+  rejects an empty body, so a gateway that stops sending a payload fails the test), and `api-probe` carried a request
+  helper nobody called.
+
 - A green with no evidence is now a failure: `npm run verify:battery` runs the fifteen §14 checks **one at a time**, records
   each exit code (so the last command cannot hide the previous ones) and rejects a step that exits 0 without printing
   proof — the dangerous case where a command runs, returns success and verified nothing. It immediately caught one:

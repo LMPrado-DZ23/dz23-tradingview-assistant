@@ -73,7 +73,6 @@ for (const page of PAGES) {
   const live = controlsOf(stripComments(html))
   const commented = controlsOf(html).filter((id) => !live.includes(id))
   const withoutListener = live.filter((id) => !jsText.includes(`'${id}'`) && !jsText.includes(`"${id}"`) && !jsText.includes(`#${id}`))
-  const report = { page, controls: live.length, withoutListener, commentedOut: commented }
   console.log(`${page.padEnd(22)} controles: ${String(live.length).padStart(2)} · sem referência: ${withoutListener.length ? withoutListener.join(', ') : 'nenhum'}${commented.length ? ` · só em comentário: ${commented.join(', ')}` : ''}`)
   if (withoutListener.length)
     problems.push({ page, kind: 'control_without_action', detail: withoutListener.join(', ') })

@@ -90,8 +90,6 @@ export const CANDLE_PATTERNS = {
   marubozu: 'corpo >= 90% da amplitude',
 }
 
-const round2 = (value) => (Number.isFinite(value) ? Number(value.toFixed(2)) : null)
-
 export function detectCandlestickPatterns (candles, { lookback = 10 } = {}) {
   if (!Array.isArray(candles) || candles.length < 3)
     return []

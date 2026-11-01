@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-11-01T05:00:22.872Z",
+  "generatedAt": "2026-11-01T05:27:00.630Z",
   "platform": "win32",
   "node": "v24.22.1",
   "source": {
-    "hash": "bb04bdb611825e76701d91c8d6d6e9de1bdfbc70359d59be3b75925f4f630dc9",
+    "hash": "69d798792ed03f7b013991700e900aa0b787f24ae79b93ad1ae667f463412ba1",
     "files": 59
   },
   "gate": {
@@ -11,7 +11,7 @@
     "gates": 34,
     "totalTests": 732,
     "failures": [],
-    "ms": 239065
+    "ms": 237345
   },
   "summary": {
     "criteria": 16,
@@ -28,7 +28,7 @@
         {
           "name": "tools",
           "verdict": "PASS",
-          "detail": "573 testes · 572 ok · 45232 ms"
+          "detail": "573 testes · 572 ok · 45210 ms"
         }
       ],
       "verdict": "PASS"
@@ -40,7 +40,7 @@
         {
           "name": "gateway",
           "verdict": "PASS",
-          "detail": "63 testes · 63 ok · 5695 ms"
+          "detail": "63 testes · 63 ok · 5689 ms"
         }
       ],
       "verdict": "PASS"
@@ -52,7 +52,7 @@
         {
           "name": "security",
           "verdict": "PASS",
-          "detail": "190 ms"
+          "detail": "215 ms"
         }
       ],
       "verdict": "PASS"
@@ -64,7 +64,7 @@
         {
           "name": "security",
           "verdict": "PASS",
-          "detail": "190 ms"
+          "detail": "215 ms"
         }
       ],
       "verdict": "PASS"
@@ -76,7 +76,7 @@
         {
           "name": "e2e",
           "verdict": "PASS",
-          "detail": "45357 ms"
+          "detail": "44889 ms"
         }
       ],
       "verdict": "PASS"
@@ -88,7 +88,7 @@
         {
           "name": "bridge",
           "verdict": "PASS",
-          "detail": "6558 ms"
+          "detail": "6510 ms"
         }
       ],
       "verdict": "PASS"
@@ -100,7 +100,7 @@
         {
           "name": "tools",
           "verdict": "PASS",
-          "detail": "573 testes · 572 ok · 45232 ms"
+          "detail": "573 testes · 572 ok · 45210 ms"
         }
       ],
       "verdict": "PASS"
@@ -112,12 +112,12 @@
         {
           "name": "quant",
           "verdict": "PASS",
-          "detail": "43 testes · 43 ok · 144 ms"
+          "detail": "43 testes · 43 ok · 154 ms"
         },
         {
           "name": "strategy",
           "verdict": "PASS",
-          "detail": "11 testes · 11 ok · 138 ms"
+          "detail": "11 testes · 11 ok · 134 ms"
         }
       ],
       "verdict": "PASS"
@@ -129,12 +129,12 @@
         {
           "name": "perf-static",
           "verdict": "PASS",
-          "detail": "61 ms"
+          "detail": "63 ms"
         },
         {
           "name": "perf-pages",
           "verdict": "PASS",
-          "detail": "3588 ms"
+          "detail": "3613 ms"
         }
       ],
       "verdict": "PASS"
@@ -146,7 +146,7 @@
         {
           "name": "a11y",
           "verdict": "PASS",
-          "detail": "1969 ms"
+          "detail": "1957 ms"
         }
       ],
       "verdict": "PASS"
@@ -158,17 +158,17 @@
         {
           "name": "settings-ui",
           "verdict": "PASS",
-          "detail": "16110 ms"
+          "detail": "16111 ms"
         },
         {
           "name": "pine-ui",
           "verdict": "PASS",
-          "detail": "3212 ms"
+          "detail": "3406 ms"
         },
         {
           "name": "contrast",
           "verdict": "PASS",
-          "detail": "5208 ms"
+          "detail": "5265 ms"
         }
       ],
       "verdict": "PASS"
@@ -180,7 +180,7 @@
         {
           "name": "docs",
           "verdict": "PASS",
-          "detail": "66 ms"
+          "detail": "72 ms"
         }
       ],
       "verdict": "PASS"
@@ -192,7 +192,7 @@
         {
           "name": "orphans",
           "verdict": "PASS",
-          "detail": "102 ms"
+          "detail": "96 ms"
         }
       ],
       "verdict": "PASS"
@@ -204,7 +204,7 @@
         {
           "name": "backup",
           "verdict": "PASS",
-          "detail": "47885 ms"
+          "detail": "47740 ms"
         }
       ],
       "verdict": "PASS"
@@ -216,7 +216,7 @@
         {
           "name": "release",
           "verdict": "PASS",
-          "detail": "250 ms"
+          "detail": "103 ms"
         }
       ],
       "verdict": "PASS"
@@ -228,12 +228,12 @@
         {
           "name": "audit",
           "verdict": "PASS",
-          "detail": "1733 ms"
+          "detail": "1193 ms"
         },
         {
           "name": "lint",
           "verdict": "PASS",
-          "detail": "6282 ms"
+          "detail": "5853 ms"
         }
       ],
       "verdict": "PASS"

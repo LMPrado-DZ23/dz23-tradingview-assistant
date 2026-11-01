@@ -30,7 +30,6 @@ function walk (directory, out = []) {
 // Padrões que o gate declara: cada string do argv que pareça caminho ou glob.
 const gateSource = readFileSync(GATE, 'utf8')
 const declared = [...gateSource.matchAll(/[`']([^`'\n]*\.test\.mjs[^`'\n]*)[`']/g)].map((match) => match[1])
-const TOOLS = join(ROOT, '_aitna', 'tools')
 const expanded = declared.map((pattern) => pattern
   .replace(/\$\{TOOLS\}/g, '_aitna/tools')
   .replace(/\\/g, '/'))

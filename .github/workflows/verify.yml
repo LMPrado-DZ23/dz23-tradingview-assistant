@@ -36,7 +36,7 @@ jobs:
 
       # ---- verificações de produto (as mesmas do gate local) ----
       - name: lint
-        run: npm run lint
+        run: npm run audit:lint
       - name: localização (catálogo e superfícies)
         run: npm run i18n:check
       - name: coerência da documentação

@@ -79,19 +79,8 @@ if (!up) {
   process.exit(1)
 }
 
-const call = async (path, { method = 'POST', body, headers = {} } = {}) => {
-  const response = await fetch(`http://127.0.0.1:${PORT}${path}`, {
-    method,
-    headers: { 'content-type': 'application/json', authorization: `Bearer ${TOKEN}`, ...headers },
-    body: body === undefined ? undefined : JSON.stringify(body),
-  })
-  const text = await response.text()
-  let json = null
-  try {
-    json = JSON.parse(text)
-  } catch { /* SSE ou texto puro */ }
-  return { status: response.status, text, json }
-}
+// A sonda monta cada requisição no próprio caso de teste (precisa de status, texto e JSON separados); um helper
+// genérico que ninguém chamava só dava a impressão de existir uma camada de transporte compartilhada.
 
 const message = [{ role: 'user', content: 'oi' }]
 const cases = [

@@ -19,9 +19,17 @@ async function listen (server) {
 
 function fakeUpstream ({ broken = false } = {}) {
   return createServer(async (request, response) => {
-    let raw = ''
+    // O corpo precisa ser consumido antes de responder (senão o socket fica pendurado) e é aqui que ele vira conferência:
+    // um provedor falso que aceita requisição vazia esconde um gateway que parou de mandar o payload. Antes o corpo era
+    // acumulado numa variável que ninguém lia — parecia conferido, não era.
+    let bytes = 0
     for await (const chunk of request)
-      raw += chunk
+      bytes += chunk.length
+    if (bytes === 0) {
+      response.writeHead(400, { 'content-type': 'text/plain' })
+      response.end('empty body')
+      return
+    }
     if (broken) {
       response.writeHead(500, { 'content-type': 'text/plain' })
       response.end('upstream exploded')
