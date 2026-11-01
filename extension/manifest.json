@@ -6,11 +6,11 @@
   "default_locale": "en",
   "version": "2.17.0",
   "icons": {
-    "16": "images/tv_assist_16.png",
-    "32": "images/tv_assist_32.png",
-    "48": "images/tv_assist_48.png",
-    "64": "images/tv_assist_64.png",
-    "128": "images/tv_assist_128.png"
+    "16": "images/dz23_16.png",
+    "32": "images/dz23_32.png",
+    "48": "images/dz23_48.png",
+    "64": "images/dz23_64.png",
+    "128": "images/dz23_128.png"
   },
   "content_scripts": [
     {
@@ -64,11 +64,11 @@
   },
   "action": {
     "default_icon": {
-      "16": "images/tv_assist_16.png",
-      "32": "images/tv_assist_32.png",
-      "48": "images/tv_assist_48.png",
-      "64": "images/tv_assist_64.png",
-      "128": "images/tv_assist_128.png"
+      "16": "images/dz23_16.png",
+      "32": "images/dz23_32.png",
+      "48": "images/dz23_48.png",
+      "64": "images/dz23_64.png",
+      "128": "images/dz23_128.png"
     },
     "default_title": "__MSG_ext_name__",
     "default_popup": "popup/assistant.html"

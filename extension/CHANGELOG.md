@@ -27,6 +27,13 @@ the whole file. Format and rendering rules: [_aitna/skills/changelog](../_aitna/
   Two of my own audits of this were wrong first — shell globs returned false negatives for `scripting` and
   `nativeMessaging`, which *are* used.
 
+- The icon promised a buy signal: the toolbar artwork was the upstream one — candlesticks with a green "BUY" — so the
+  first thing a user sees advertised trade recommendations in an assistant that explicitly does not give them, and at
+  16 px the word was noise. It was also someone else's mark. Replaced by a single-stroke "Z" in the panel accent colour,
+  generated at 16/32/48/64/128 by `npm run brand:icons` (`_aitna/tools/brand/icon.py`). `npm run audit:icons` (in the
+  gate and the CI) checks file presence, exact dimensions, `action.default_icon` matching `icons`, and **fails on the
+  original artwork by hash**.
+
 - The package introduced itself as another project: `package.json` still carried the upstream name and description, with no
   repository, homepage or bugs link, and the extension description the user actually sees (both locales) only mentioned
   backtesting — as if the copilot, market intelligence and local lab did not exist. Fixed: package renamed to

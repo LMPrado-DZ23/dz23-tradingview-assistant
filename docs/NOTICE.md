@@ -34,6 +34,9 @@ uma plataforma em volta:
 | Alertas e watchlists | `extension/settings/boards.js` — CRUD com confirmação e releitura |
 | Verificação | `_aitna/tools/` — 31 verificações no gate, 732 testes, auditorias de segredo, permissão e documentação |
 
+Arte: os ícones originais (candles com "BUY") foram substituídos pela marca do DZ23 — gerada por
+`npm run brand:icons`, em `_aitna/tools/brand/icon.py`. A arte original continua no histórico do Git.
+
 Modificações no que já existia: links de ajuda passaram a apontar para este repositório; diálogos de erro ganharam saída
 (ver [DIALOGOS.md](DIALOGOS.md)); caminhos absolutos de máquina foram removidos do código.
 

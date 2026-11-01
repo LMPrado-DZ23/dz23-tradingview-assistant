@@ -44,7 +44,7 @@ O projeto não pede confiança: pede que você rode.
 npm run verify        # gate com evidência + pacote + conferência dos números do relatório
 ```
 
-Estado atual, medido nesta máquina: **33 verificações** no gate, **732 testes**, aceite **16/16** (2 dependências externas,
+Estado atual, medido nesta máquina: **34 verificações** no gate, **732 testes**, aceite **16/16** (2 dependências externas,
 2 itens ausentes por decisão). O relatório completo está em [docs/ENTREGA.md](docs/ENTREGA.md) e a matriz de aceitação em
 [docs/ACEITACAO.md](docs/ACEITACAO.md).
 

@@ -49,6 +49,8 @@ jobs:
         run: npm run audit:test-files
       - name: números do relatório conferidos contra o artefato
         run: npm run audit:numbers
+      - name: ícones da extensão (arquivo, dimensão, arte)
+        run: npm run audit:icons
       - name: identidade pública (nome, descrição, links, atribuição)
         run: npm run audit:identity
       - name: README confere com o gate e com a evidência
