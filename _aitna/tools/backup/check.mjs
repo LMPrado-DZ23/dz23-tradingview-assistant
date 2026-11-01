@@ -163,7 +163,9 @@ try {
       const run = spawnSync(process.execPath, ['--test', ...picks], { cwd: functional, encoding: 'utf8', timeout: 300_000, env: cleanEnv })
       const output = `${run.stdout ?? ''}${run.stderr ?? ''}`
       const tests = Number((/ℹ tests (\d+)/.exec(output) ?? /# tests (\d+)/.exec(output))?.[1] ?? 0)
-      const pass = Number(/ℹ pass (\d+)/.exec(output)?.[1] ?? 0)
+      // O reporter do node muda com a saída: `ℹ pass N` (spec/ESM) ou `# pass N` (TAP). Ler só um formato dava "0 aprovados"
+// num teste que passou — e isso só aparecia no CI, onde a saída não é um terminal.
+const pass = Number((/ℹ pass (\d+)/.exec(output) ?? /# pass (\d+)/.exec(output))?.[1] ?? 0)
       if (tests === 0) {
         problems.push('ensaio funcional não executou nenhum teste (suíte do backup vazia ou quebrada)')
         notes.push(`  saída do ensaio: ${output.replace(/\s+/g, ' ').slice(0, 220) || '(vazia)'}`)
