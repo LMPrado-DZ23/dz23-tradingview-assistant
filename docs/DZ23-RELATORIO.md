@@ -1,7 +1,7 @@
 # DZ23 Quant Research Platform — relatório de entrega
 
 Versão do artefato: **2.16.0** · Data: 2026-10-29/30 · Repositório local (não é repositório git: sem branch/commit).
-Backup do estado inicial: `C:\Users\lmpra\Documents\dz23-backups\tv-assistant-20261029-225005`.
+Backup do estado inicial: `%USERPROFILE%\Documents\dz23-backups\tv-assistant-20261029-225005`.
 
 ## O que existe agora
 

@@ -30,6 +30,16 @@ const SECRET_PATTERNS = [
   { regex: /ghp_[A-Za-z0-9]{30,}/, why: 'token do GitHub' },
   { regex: /xox[baprs]-[A-Za-z0-9-]{10,}/, why: 'token do Slack' },
   { regex: /-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----/, why: 'chave privada' },
+  // só em código: em documento o caminho é instrução, não defeito (mas o nome do usuário não deve aparecer)
+  {
+    regex: /[A-Z]:[\\/]Users[\\/][A-Za-z0-9._-]+/,
+    why: 'caminho absoluto de máquina em código: quebra em outro computador e expõe o usuário',
+    codeOnly: true,
+    // Exceção com motivo, não conveniência: as ferramentas E2E abrem Chrome e usam fixtures da máquina do dono.
+    // Enquanto não forem portáveis, o CI não as executa — e o motivo fica escrito aqui em vez de escondido.
+    exempt: /^_aitna\/tools\/e2e\//,
+    exemptWhy: 'ferramentas E2E rodam na máquina do dono (Chrome + fixtures do Windows); portabilidade pendente, por isso ficam fora do CI',
+  },
 ]
 
 // Fixtures de teste citam credenciais de mentira de propósito; a marca precisa ser explícita na própria linha.
@@ -84,7 +94,14 @@ for (const file of files) {
   for (const [index, line] of lines.entries()) {
     if (FIXTURE_MARKERS.test(line))
       continue
+    const isCode = /\.(mjs|cjs|js)$/.test(file)
     for (const pattern of SECRET_PATTERNS) {
+      if (pattern.codeOnly && !isCode)
+        continue
+      if (pattern.exempt?.test(file)) {
+        notes.push(`${file}: exceção declarada — ${pattern.exemptWhy}`)
+        continue
+      }
       if (pattern.regex.test(line)) {
         problems.push({ kind: 'secret_in_content', file, line: index + 1, why: pattern.why })
         break

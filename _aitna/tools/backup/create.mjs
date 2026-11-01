@@ -5,11 +5,13 @@
 //
 // The snapshot is a plain directory copy so a rollback is: copy `extension/` back and load it unpacked.
 import { cpSync, existsSync, mkdirSync, readdirSync, rmSync, statSync, writeFileSync } from 'node:fs'
+import { homedir } from 'node:os'
 import { basename, dirname, join, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..')
-const BACKUP_ROOT = process.env.DZ23_BACKUP_ROOT ?? 'C:/Users/lmpra/Documents/dz23-backups'
+const BACKUP_ROOT = process.env.DZ23_BACKUP_ROOT
+  ?? join(homedir(), 'Documents', 'dz23-backups')
 const INCLUDES = ['extension', 'gateway', 'mcp', 'dz23', 'docs', '_aitna/tools', 'package.json', 'README.md', 'eslint.config.mjs', 'native-host']
 const SKIP = new Set(['node_modules', '.git', '.browser', 'dist', 'coverage'])
 

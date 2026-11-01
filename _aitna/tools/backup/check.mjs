@@ -7,12 +7,13 @@
 import { createHash } from 'node:crypto'
 import { cpSync, existsSync, mkdtempSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from 'node:fs'
 import { spawnSync } from 'node:child_process'
-import { tmpdir } from 'node:os'
+import { homedir, tmpdir } from 'node:os'
 import { basename, dirname, join, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..')
-const BACKUP_ROOT = process.env.DZ23_BACKUP_ROOT ?? 'C:/Users/lmpra/Documents/dz23-backups'
+const BACKUP_ROOT = process.env.DZ23_BACKUP_ROOT
+  ?? join(homedir(), 'Documents', 'dz23-backups')
 const problems = []
 const notes = []
 

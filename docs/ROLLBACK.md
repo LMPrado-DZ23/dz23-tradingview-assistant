@@ -19,7 +19,7 @@ O repositório tem histórico desde 2026-10-31 (remoto privado
 `https://github.com/LMPrado-DZ23/dz23-tradingview-assistant`). Um commit quebrado não é motivo para editar arquivos à mão:
 
 ```powershell
-cd C:\Users\lmpra\Documents\tradingview-assistant-chrome-extension-main
+cd %USERPROFILE%\Documents\tradingview-assistant-chrome-extension-main
 
 git log --oneline -10          # veja onde você está e o que quer recuperar
 git revert <hash>              # desfaz UM commit criando outro (preserva o histórico)
@@ -38,7 +38,7 @@ npm run verify     # gate com evidência + pacote + conferência dos números do
 
 ## 3. Voltar pelo backup da pasta inteira (último recurso)
 
-Backups completos, nunca excluídos: `C:\Users\lmpra\Documents\dz23-backups\tv-assistant-*`.
+Backups completos, nunca excluídos: `%USERPROFILE%\Documents\dz23-backups\tv-assistant-*`.
 
 Cada backup é uma cópia íntegra da árvore e **executa a própria suíte** para provar que é recuperável:
 

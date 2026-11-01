@@ -1,11 +1,11 @@
-// Onde está o Chrome para os testes E2E — resolvido, não fixado no caminho de uma máquina.
+// Onde está o Chrome para os testes que abrem navegador — resolvido, não fixado no caminho de uma máquina.
 //
-// Antes, cada ferramenta tinha `const CHROME = 'C:/Users/<usuário>/...'`. Isso funciona numa máquina só: no CI (Linux) e
-// na máquina de outra pessoa o teste falha por caminho, não por defeito. Ordem de busca:
+// Antes, cada ferramenta trazia `const CHROME = 'C:/Users/<usuário>/...'`: funcionava numa máquina e no CI falhava por
+// caminho, não por defeito. Ordem de busca:
 //   1. DZ23_CHROME (explícito — é o que o CI usa)
 //   2. cache do puppeteer em _aitna/.browser (instalado por `npx puppeteer browsers install chrome`)
 //   3. Chrome do sistema em caminhos conhecidos por plataforma
-// Se nada for encontrado, o erro diz exatamente o que instalar — nunca "falhou sem motivo".
+// Se nada for encontrado, o erro diz o que instalar — nunca "falhou sem motivo".
 import { existsSync, readdirSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -18,10 +18,10 @@ function candidates () {
   if (process.env.DZ23_CHROME)
     list.push(process.env.DZ23_CHROME)
 
-  // cache do puppeteer: <cache>/chrome/<plataforma-versão>/chrome-<plataforma>/chrome
   if (existsSync(CACHE)) {
     for (const build of readdirSync(CACHE)) {
-      if (!build.startsWith('chrome')) continue
+      if (!build.startsWith('chrome'))
+        continue
       const dir = join(CACHE, build)
       for (const inner of readdirSync(dir)) {
         list.push(
@@ -57,3 +57,8 @@ export function chromePath () {
     '(cai em _aitna/.browser) ou aponte DZ23_CHROME para o executável.',
   )
 }
+
+// raiz do repositório, para as ferramentas não digitarem caminho de máquina
+export const REPO_ROOT = ROOT
+// pasta da extensão (o que a maioria das ferramentas serve ou inspeciona)
+export const EXT_DIR = join(ROOT, 'extension')

@@ -16,7 +16,7 @@ registrado — nada aqui é instrução copiada de documentação antiga.
 
 ```powershell
 # chrome://extensions → modo desenvolvedor → "Carregar sem compactação"
-# selecione a pasta: C:\Users\lmpra\Documents\tradingview-assistant-chrome-extension-main\extension
+# selecione a pasta: %USERPROFILE%\Documents\tradingview-assistant-chrome-extension-main\extension
 ```
 
 O ID é **fixo** por causa da `key` no manifest: `ejmflepgfmffgicdjdaigdfdcacehgma`. Mover a pasta para outro caminho
@@ -25,7 +25,7 @@ O ID é **fixo** por causa da `key` no manifest: `ejmflepgfmffgicdjdaigdfdcacehg
 ## 2. Gateway
 
 ```powershell
-cd C:\Users\lmpra\Documents\tradingview-assistant-chrome-extension-main
+cd %USERPROFILE%\Documents\tradingview-assistant-chrome-extension-main
 npm run gateway:dev
 ```
 

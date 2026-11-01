@@ -4,7 +4,7 @@ Versão **2.17.0**. Documento gerado a partir da execução real do repositório
 comprovado, está escrito assim.
 
 ```
-repositório: C:\Users\lmpra\Documents\tradingview-assistant-chrome-extension-main
+repositório: %USERPROFILE%\Documents\tradingview-assistant-chrome-extension-main
 pacote:      assistant-ext.zip · 67 arquivos · v2.17.0
 SHA-256:     2c3f94962e974caee71e0e9b392a73353c97fe6ad313d5646a919ee0a8f553d6
 ```
@@ -169,10 +169,10 @@ Natureza dos testes, sem confundir as coisas:
 ```powershell
 # 1. extensão
 #    chrome://extensions → modo desenvolvedor → "Carregar sem compactação"
-#    selecione C:\Users\lmpra\Documents\tradingview-assistant-chrome-extension-main\extension
+#    selecione %USERPROFILE%\Documents\tradingview-assistant-chrome-extension-main\extension
 
 # 2. gateway (uma vez por sessão do Windows)
-cd C:\Users\lmpra\Documents\tradingview-assistant-chrome-extension-main
+cd %USERPROFILE%\Documents\tradingview-assistant-chrome-extension-main
 npm run gateway:dev          # reusa o token de ~/.dz23/gateway-token
 
 # 3. native host (opcional: deixa o gateway subir sozinho)
@@ -194,7 +194,7 @@ padrão selecionado em ⚙, chaves no **gateway** (`~/.dz23/providers.env` ou va
 
 ```powershell
 # voltar a extensão
-#   chrome://extensions → remover → carregar a pasta de um snapshot em C:\Users\lmpra\Documents\dz23-backups\
+#   chrome://extensions → remover → carregar a pasta de um snapshot em %USERPROFILE%\Documents\dz23-backups\
 # remover o native host
 npm run host:uninstall
 # apagar a configuração e o pareamento
@@ -202,7 +202,7 @@ npm run host:uninstall
 #   del "$env:USERPROFILE\.dz23\gateway-token"   (o próximo gateway:dev gera outro)
 ```
 
-Backups: `C:\Users\lmpra\Documents\dz23-backups\tv-assistant-*` (nenhum foi excluído).
+Backups: `%USERPROFILE%\Documents\dz23-backups\tv-assistant-*` (nenhum foi excluído).
 
 Versionamento: desde 2026-10-31 o projeto tem histórico Git — commits `ab10b8e` (entrega v2.17.0) e `c651194` (guarda de
 segredos) — e remoto **privado** em https://github.com/LMPrado-DZ23/dz23-tradingview-assistant, com autorização explícita

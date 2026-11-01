@@ -23,7 +23,7 @@ extensão (painel)  --dz23:gateway:ensure-->  background.js  --connectNative--> 
 ## Instalação (uma vez, por usuário)
 
 ```powershell
-cd C:\Users\lmpra\Documents\tradingview-assistant-chrome-extension-main
+cd %USERPROFILE%\Documents\tradingview-assistant-chrome-extension-main
 node native-host/install.mjs --extension-id ejmflepgfmffgicdjdaigdfdcacehgma
 ```
 

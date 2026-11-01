@@ -1,7 +1,11 @@
 name: verify
 
-# O gate deste produto, rodando em CI. É o mesmo `npm run verify` que roda localmente — o que muda é só o runner.
-# Não há passo de build: extensão MV3 em JS puro não compila. O que existe é verificação.
+# O gate deste produto em CI, com o que é determinístico e independente de plataforma.
+#
+# O que NÃO roda aqui, e por quê: os testes E2E abrem um Chrome de verdade e dependem de fixtures validadas na máquina do
+# dono (perfil, larguras, tempo de render). Eles rodam localmente com `npm run test:e2e`, `npm run test:a11y`,
+# `npm run perf:check` e `npm run docs:screenshots`. Colocá-los aqui exigiria reescrever sete ferramentas que hoje usam
+# caminho e Chrome do Windows — e um CI que falha por ambiente não informa nada, então ele cobre o que consegue provar.
 on:
   push:
     branches: [master]
@@ -13,10 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
-      # os testes sem browser não precisam do Chrome for Testing; baixar 150 MB em todo push é desperdício
       PUPPETEER_SKIP_DOWNLOAD: "true"
-      # o gateway e os testes usam caminhos relativos à raiz do repositório
-      DZ23_CI: "1"
     steps:
       - uses: actions/checkout@v4
         with:
@@ -28,16 +29,6 @@ jobs:
           cache: npm
       - name: dependências
         run: npm ci
-
-      # Os testes de ponte e de painel abrem um Chrome de verdade. Sem ele aqui, os E2E falhariam por ambiente, não por
-      # código — e "falhou por falta de navegador" é exatamente o tipo de vermelho que não informa nada.
-      - name: Chrome for Testing
-        run: npx puppeteer browsers install chrome
-      - name: apontar o Chrome para os testes
-        run: |
-          CHROME_BIN=$(node -e "import('./_aitna/tools/e2e/chrome.mjs').then(m => console.log(m.chromePath()))")
-          echo "DZ23_CHROME=$CHROME_BIN" >> "$GITHUB_ENV"
-          echo "usando $CHROME_BIN"
 
       # `audit:numbers` confere os números do relatório contra o pacote de verdade; num clone limpo ele não existe
       - name: pacote de distribuição
@@ -54,6 +45,8 @@ jobs:
         run: npm run audit:secrets
       - name: permissões do manifest conferidas contra o uso
         run: npm run audit:permissions
+      - name: nenhum arquivo de teste fora do gate
+        run: npm run audit:test-files
       - name: números do relatório conferidos contra o artefato
         run: npm run audit:numbers
       - name: exportações mortas
@@ -72,8 +65,6 @@ jobs:
         run: npm run test:dz23
       - name: mcp
         run: npm run test:mcp
-      - name: bridge
-        run: npm run test:bridge
       - name: extensão e ferramentas
         run: npm run test:ext
       - name: ferramentas de auditoria
